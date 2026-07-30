@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="Pretzel.App/Pretzel.App.csproj" Id="54cfa07b-6745-4892-8d55-47731fd8dd28">
+    <Deploy Solution="Debug|*" />
+  </Project>
+  <Project Path="Pretzel.Core/Pretzel.Core.csproj" Id="6c78ecb1-1529-48be-90bf-eece6cc05b46" />
+  <Project Path="Pretzel.Infrastructure/Pretzel.Infrastructure.csproj" Id="c4b9f959-f349-46f3-a4ae-7e3d0538be57" />
+</Solution>
