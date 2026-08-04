@@ -13,7 +13,7 @@
                                        Spacing="16" 
                                        Padding="24,5,0,5">
 
-                    <titleBarComps:NavigationButtonView ButtonText="Library" ButtonImage="dotnet_bot.png"/>
+                    <titleBarComps:NavigationButtonView ButtonText="Library"/>
 
                 </HorizontalStackLayout>
             </TitleBar.LeadingContent>

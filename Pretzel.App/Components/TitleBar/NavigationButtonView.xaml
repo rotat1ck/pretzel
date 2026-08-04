@@ -5,15 +5,27 @@
              x:Name="root">
 
     <Border Stroke="Transparent" 
-        StrokeShape="RoundRectangle 4" 
-        BackgroundColor="#3C4A5E">
+            StrokeShape="RoundRectangle 4" 
+            BackgroundColor="#3C4A5E">
 
         <Grid ColumnDefinitions="Auto,Auto" 
-          ColumnSpacing="4"
-          Padding="12,0,12,0">
-            <Image Source="{Binding Source={x:Reference root}, Path=ButtonImage}" Aspect="AspectFit" HeightRequest="16" WidthRequest="16"/>
-            <Label Grid.Column="1" Text="{Binding Source={x:Reference root}, Path=ButtonText}" FontSize="14" VerticalOptions="Center"/>
+              ColumnSpacing="4"
+              Padding="12,0,12,0">
+
+            <Image Source="{Binding Source={x:Reference root}, Path=ButtonImage}" 
+                   Aspect="AspectFit" 
+                   HeightRequest="16" WidthRequest="16">
+                <Image.Triggers>
+                    <Trigger TargetType="Image" Property="Source" Value="{x:Null}">
+                        <Setter Property="IsVisible" Value="False"/>
+                    </Trigger>
+                </Image.Triggers>
+            </Image>
+
+            <Label Grid.Column="1" 
+                   Text="{Binding Source={x:Reference root}, Path=ButtonText}" 
+                   FontSize="14" 
+                   VerticalOptions="Center"/>
         </Grid>
     </Border>
-
 </ContentView>
