@@ -2,6 +2,7 @@
 <Window xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
         xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
         xmlns:local="clr-namespace:Pretzel.App"
+        xmlns:titleBarComps="clr-namespace:Pretzel.App.Components.TitleBar"
         x:Class="Pretzel.App.MainWindow">
     
     <Window.TitleBar>
@@ -11,17 +12,9 @@
                 <HorizontalStackLayout Grid.Column="0" 
                                        Spacing="16" 
                                        Padding="24,5,0,5">
-                    <Border Stroke="Transparent" 
-                            StrokeShape="RoundRectangle 4" 
-                            BackgroundColor="#3C4A5E">
-                        
-                        <Grid ColumnDefinitions="Auto,Auto" 
-                              ColumnSpacing="4"
-                              Padding="12,0,12,0">
-                            <Image Source="dotnet_bot.png" Aspect="AspectFit" HeightRequest="16" WidthRequest="20"/>
-                            <Label Grid.Column="1" Text="Library" FontSize="14" VerticalOptions="Center"/>
-                        </Grid>
-                    </Border>
+
+                    <titleBarComps:NavigationButtonView ButtonText="Library" ButtonImage="dotnet_bot.png"/>
+
                 </HorizontalStackLayout>
             </TitleBar.LeadingContent>
             
