@@ -2,6 +2,7 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Pretzel.App.Components.TitleBar.NavigationButtonView"
+             Background="Transparent"
              x:Name="root">
 
     <VisualStateManager.VisualStateGroups>
@@ -21,8 +22,12 @@
         </VisualStateGroup>
     </VisualStateManager.VisualStateGroups>
 
+    <ContentView.GestureRecognizers>
+        <TapGestureRecognizer Command="{Binding Source={x:Reference root}, Path=NavigateCommand}" />
+    </ContentView.GestureRecognizers>
+
     <Border x:Name="buttonBorder"
-            Stroke="Transparent" 
+            Stroke="Transparent"
             StrokeShape="RoundRectangle 4">
 
         <Grid ColumnDefinitions="Auto,Auto" 

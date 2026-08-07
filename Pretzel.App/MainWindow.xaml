@@ -14,7 +14,7 @@
                                        Padding="24,5,0,5">
 
                     <titleBarComps:NavigationButtonView ButtonText="Library" TargetRoute="TestPage" />
-                    <titleBarComps:NavigationButtonView ButtonText="Explore" TargetRoute="MainPage" />
+                    <titleBarComps:NavigationButtonView ButtonText="Explore" TargetRoute="MainPage"  />
 
                 </HorizontalStackLayout>
             </TitleBar.LeadingContent>

@@ -1,3 +1,5 @@
+using System.Windows.Input;
+
 namespace Pretzel.App.Components.TitleBar;
 
 public partial class NavigationButtonView : ContentView
@@ -39,6 +41,16 @@ public partial class NavigationButtonView : ContentView
         set => SetValue(IsActiveProperty, value);
     }
 
+    public ICommand NavigateCommand => field ??= new Command(async () =>
+    {
+        if (!string.IsNullOrEmpty(TargetRoute) && Shell.Current is not null)
+        {
+            var navigateTo = "///" + TargetRoute.TrimStart('/');
+            await Shell.Current.GoToAsync(navigateTo);
+        }
+    });
+
+
     private static void OnIsActiveChanged(BindableObject bindable, object oldValue, object newValue)
     {
         var view = (NavigationButtonView)bindable;
@@ -47,10 +59,28 @@ public partial class NavigationButtonView : ContentView
 
     public NavigationButtonView()
     {
+        //NavigateCommand = new Command(async () =>
+        //{
+        //    if (!string.IsNullOrEmpty(TargetRoute) && Shell.Current is not null)
+        //    {
+        //        var navigateTo = "///" + TargetRoute.TrimStart('/');
+        //        await Shell.Current.GoToAsync(navigateTo);
+        //    }
+        //});
+
         InitializeComponent();
 
         Loaded += OnLoaded;
         Unloaded += OnUnloaded;
+
+        //NavigateCommand = new Command(async () =>
+        //{
+        //    if (!string.IsNullOrEmpty(TargetRoute) && Shell.Current is not null)
+        //    {
+        //        var navigateTo = "///" + TargetRoute.TrimStart('/');
+        //        await Shell.Current.GoToAsync(navigateTo);
+        //    }
+        //});
     }
 
     private void OnLoaded(object? sender, EventArgs e)
