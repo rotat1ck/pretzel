@@ -4,16 +4,33 @@
              x:Class="Pretzel.App.Components.TitleBar.NavigationButtonView"
              x:Name="root">
 
-    <Border Stroke="Transparent" 
-            StrokeShape="RoundRectangle 4" 
-            BackgroundColor="#3C4A5E">
+    <VisualStateManager.VisualStateGroups>
+        <VisualStateGroup x:Name="States">
+            <VisualState x:Name="Navigated">
+                <VisualState.Setters>
+                    <Setter TargetName="buttonBorder" Property="Border.Background" Value="#3C4A5E"/>
+                    <Setter TargetName="buttonText" Property="Label.TextColor" Value="#ABB9D2"/>
+                </VisualState.Setters>
+            </VisualState>
+            <VisualState x:Name="NotNavigated">
+                <VisualState.Setters>
+                    <Setter TargetName="buttonBorder" Property="Border.Background" Value="Transparent"/>
+                    <Setter TargetName="buttonText" Property="Label.TextColor" Value="#C4C6CD"/>
+                </VisualState.Setters>
+            </VisualState>
+        </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
+
+    <Border x:Name="buttonBorder"
+            Stroke="Transparent" 
+            StrokeShape="RoundRectangle 4">
 
         <Grid ColumnDefinitions="Auto,Auto" 
               ColumnSpacing="4"
               Padding="12,0,12,0">
 
             <Image Source="{Binding Source={x:Reference root}, Path=ButtonImage}" 
-                   Aspect="AspectFit" 
+                   Aspect="AspectFit"
                    HeightRequest="16" WidthRequest="16">
                 <Image.Triggers>
                     <Trigger TargetType="Image" Property="Source" Value="{x:Null}">
@@ -22,9 +39,10 @@
                 </Image.Triggers>
             </Image>
 
-            <Label Grid.Column="1" 
+            <Label x:Name="buttonText"
+                   Grid.Column="1" 
                    Text="{Binding Source={x:Reference root}, Path=ButtonText}" 
-                   FontSize="14" 
+                   FontSize="14" TextColor="#C4C6CD"
                    VerticalOptions="Center"/>
         </Grid>
     </Border>

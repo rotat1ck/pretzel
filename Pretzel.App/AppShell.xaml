@@ -4,9 +4,21 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Pretzel.App"
+    xmlns:views="clr-namespace:Pretzel.App.Views"
     Title="Pretzel.App">
 
-    <ShellContent
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <TabBar>
+        <Tab Title="MainPage">
+            <ShellContent
+                ContentTemplate="{DataTemplate local:MainPage}"
+                Route="MainPage" /> 
+        </Tab>
+        <Tab Title="Library">
+            <ShellContent
+                ContentTemplate="{DataTemplate views:TestPage}"
+                Route="TestPage" />
+        </Tab>
+    </TabBar>
+
+    
 </Shell>
