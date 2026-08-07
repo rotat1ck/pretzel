@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
         xmlns:local="clr-namespace:Pretzel.App"
         xmlns:titleBarComps="clr-namespace:Pretzel.App.Components.TitleBar"
+        Title="Pretzel"
         x:Class="Pretzel.App.MainWindow">
     
     <Window.TitleBar>
@@ -13,8 +14,10 @@
                                        Spacing="16" 
                                        Padding="24,5,0,5">
 
-                    <titleBarComps:NavigationButtonView ButtonText="Library" TargetRoute="TestPage" />
-                    <titleBarComps:NavigationButtonView ButtonText="Explore" TargetRoute="MainPage"  />
+                    <titleBarComps:NavigationButtonView ButtonText="Library" TargetRoute="TestPage" ButtonImage="library_icon.png"/>
+                    <titleBarComps:NavigationButtonView ButtonText="Explore" TargetRoute="MainPage" ButtonImage="explore_icon.png" />
+                    <titleBarComps:NavigationButtonView ButtonText="Recent" ButtonImage="recent_icon.png" />
+                    <titleBarComps:NavigationButtonView ButtonText="Settings" ButtonImage="settings_icon.png" />
 
                 </HorizontalStackLayout>
             </TitleBar.LeadingContent>

@@ -59,28 +59,10 @@ public partial class NavigationButtonView : ContentView
 
     public NavigationButtonView()
     {
-        //NavigateCommand = new Command(async () =>
-        //{
-        //    if (!string.IsNullOrEmpty(TargetRoute) && Shell.Current is not null)
-        //    {
-        //        var navigateTo = "///" + TargetRoute.TrimStart('/');
-        //        await Shell.Current.GoToAsync(navigateTo);
-        //    }
-        //});
-
         InitializeComponent();
 
         Loaded += OnLoaded;
         Unloaded += OnUnloaded;
-
-        //NavigateCommand = new Command(async () =>
-        //{
-        //    if (!string.IsNullOrEmpty(TargetRoute) && Shell.Current is not null)
-        //    {
-        //        var navigateTo = "///" + TargetRoute.TrimStart('/');
-        //        await Shell.Current.GoToAsync(navigateTo);
-        //    }
-        //});
     }
 
     private void OnLoaded(object? sender, EventArgs e)
@@ -96,8 +78,11 @@ public partial class NavigationButtonView : ContentView
 
     private void UpdateActiveState()
     {
-        var currentLocation = Shell.Current.CurrentState.Location.ToString();
-        IsActive = currentLocation.Contains(TargetRoute);
+        if (!string.IsNullOrEmpty(TargetRoute))
+        {
+            var currentLocation = Shell.Current.CurrentState.Location.ToString();
+            IsActive = currentLocation.Contains(TargetRoute);
+        }
     }
 
     private void OnUnloaded(object? sender, EventArgs e)

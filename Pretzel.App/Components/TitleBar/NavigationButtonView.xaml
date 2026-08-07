@@ -48,6 +48,7 @@
                    Grid.Column="1" 
                    Text="{Binding Source={x:Reference root}, Path=ButtonText}" 
                    FontSize="14" TextColor="#C4C6CD"
+                   FontFamily="Lexend"
                    VerticalOptions="Center"/>
         </Grid>
     </Border>
