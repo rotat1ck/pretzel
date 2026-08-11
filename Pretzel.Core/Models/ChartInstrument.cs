@@ -6,5 +6,5 @@ public class ChartInstrument
 {
     public InstrumentType Instrument { get; set; }
     public int Rating { get; set; }
-    public HashSet<DifficultyLevel> AvailableDifficulties { get; set; } = new();
+    public HashSet<DifficultyLevel>? AvailableDifficulties { get; set; }
 }
