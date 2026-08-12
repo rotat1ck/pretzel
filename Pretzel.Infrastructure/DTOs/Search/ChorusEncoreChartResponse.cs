@@ -23,6 +23,9 @@ public class ChorusEncoreChartResponse : IJsonOnDeserialized
     [JsonPropertyName("genre")]
     public string? Genre { get; set; }
 
+    [JsonPropertyName("year")]
+    public required string Year { get; set; }
+
 
     [JsonPropertyName("md5")]
     public required string ChartUri { get; set; }
@@ -38,7 +41,7 @@ public class ChorusEncoreChartResponse : IJsonOnDeserialized
     public IEnumerable<ChartInstrument> Instruments { get; set; } = [];
 
     [JsonExtensionData]
-    public JsonObject ExtensionData { get; set; }
+    public JsonObject? ExtensionData { get; set; }
 
     public void OnDeserialized()
     {
@@ -55,7 +58,7 @@ public class ChorusEncoreChartResponse : IJsonOnDeserialized
         // difficulties
         foreach (var instrument in Instruments)
         {
-            var difficulties = ChartData.DifficultyData.FirstOrDefault(ci => ci.Instrument == instrument.Instrument)?.AvailableDifficulties;
+            var difficulties = ChartData.Difficulties.FirstOrDefault(ci => ci.Instrument == instrument.Instrument)?.AvailableDifficulties;
             if (difficulties is null)
             {
                 continue;
@@ -72,6 +75,6 @@ public class ChorusEncoreChartResponse : IJsonOnDeserialized
 
         [JsonPropertyName("noteCounts")]
         [JsonConverter(typeof(ChorusEncoreDifficultiesJsonConverter))]
-        public required IEnumerable<ChartInstrument> DifficultyData { get; set; }
+        public required IEnumerable<ChartInstrument> Difficulties { get; set; }
     }
 }

@@ -31,7 +31,7 @@ public class ChartInstrumentJsonConverter : JsonConverter<IEnumerable<ChartInstr
 
     private ChartInstrument? ConvertToChartInstrument(JsonObject obj, string propertyName)
     {
-        InstrumentType? instrumentType = InstrumentTypeResolver.ResolveFromName(propertyName.TrimStart("diff_").ToString());
+        InstrumentType? instrumentType = InstrumentTypeResolver.ResolveFromName(propertyName.Remove(0, 5).ToString());
         if (instrumentType is null)
         {
             return default;
