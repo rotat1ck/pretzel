@@ -57,7 +57,7 @@ public class RhythmVerseChartResponse : IJsonOnDeserialized
     public class RhythmVerseChartFileResponse
     {
         [JsonPropertyName("album_art")]
-        public required string AlbumArtUri { get; set; }
+        public required string? AlbumArtUri { get; set; }
 
         [JsonPropertyName("download_url")]
         public required string ChartUri { get; set; }

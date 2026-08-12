@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Maui.LifecycleEvents;
 using Microsoft.Maui.Platform;
+using Pretzel.App.ViewModels;
+using Pretzel.Infrastructure;
 
 namespace Pretzel.App;
 
@@ -39,7 +41,9 @@ public static class MauiProgram
                     });
                 });
 #endif
-            });
+            })
+            .Services.AddTransient<TestViewModel>()
+            .AddInfrastructure();
 
 #if DEBUG
         builder.Logging.AddDebug();

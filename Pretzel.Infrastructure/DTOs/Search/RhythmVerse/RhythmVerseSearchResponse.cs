@@ -13,7 +13,7 @@ public class RhythmVerseSearchResponse
         public required RecordsData Records { get; set; }
 
         [JsonPropertyName("songs")]
-        public required IEnumerable<RhythmVerseChartResponse> Songs { get; set; }
+        public required IEnumerable<RhythmVerseChartResponse> Items { get; set; }
 
         public class RecordsData
         {

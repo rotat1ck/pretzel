@@ -5,6 +5,6 @@ namespace Pretzel.Core.Models;
 public class ChartDownloadSource
 {
     public ChartSource Source { get; set; }
-    public string ChartUri { get; set; } = string.Empty;
+    public required string ChartUri { get; set; }
     public string? AlbumArtUri { get; set; }
 }

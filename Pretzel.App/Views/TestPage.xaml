@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:Pretzel.Core.Models;assembly=Pretzel.Core"
+             xmlns:viewModels="clr-namespace:Pretzel.App.ViewModels"
              x:Class="Pretzel.App.Views.TestPage"
-             Title="TestPage">
+             x:DataType="viewModels:TestViewModel">
+    
     <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+        <CollectionView ItemsSource="{Binding Charts}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Chart">
+                    <HorizontalStackLayout BackgroundColor="FloralWhite">
+                        <Label Text="{Binding Name}" />
+                        <Label Text="{Binding Charter}" />
+                        <Label Text="{Binding Album}" />
+                    </HorizontalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </VerticalStackLayout>
 </ContentPage>
