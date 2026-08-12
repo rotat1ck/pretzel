@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Pretzel.Infrastructure.DTOs.Search;
+namespace Pretzel.Infrastructure.DTOs.Search.ChorusEncore;
 
 public class ChorusEncoreSearchResponse
 {
