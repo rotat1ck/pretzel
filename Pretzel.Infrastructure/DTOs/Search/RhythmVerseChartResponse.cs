@@ -20,10 +20,7 @@ public class RhythmVerseChartResponse : IJsonOnDeserialized
 
     public void OnDeserialized()
     {
-        var options = new JsonSerializerOptions();
-        options.Converters.Add(new ChartInstrumentJsonConverter());
-
-        var chartInstruments = JsonSerializer.Deserialize<IEnumerable<ChartInstrument>>(File.ExtensionData, options);
+        var chartInstruments = JsonSerializer.Deserialize<IEnumerable<ChartInstrument>>(File.ExtensionData, chartInstrumentsSerializerOptions);
         if (chartInstruments is not null)
         {
             Instruments = chartInstruments;
@@ -32,12 +29,10 @@ public class RhythmVerseChartResponse : IJsonOnDeserialized
         foreach (var instrument in Instruments)
         {
             var difficulties = File.Difficulties.FirstOrDefault(ci => ci.Instrument == instrument.Instrument)?.AvailableDifficulties;
-            if (difficulties is null)
+            if (difficulties is not null)
             {
-                continue;
+                instrument.AvailableDifficulties = difficulties;
             }
-
-            instrument.AvailableDifficulties = difficulties;
         }
     }
 
@@ -83,4 +78,11 @@ public class RhythmVerseChartResponse : IJsonOnDeserialized
             public required string Charter { get; set; }
         }
     }
+
+    private static readonly JsonSerializerOptions chartInstrumentsSerializerOptions = new Lazy<JsonSerializerOptions>(() =>
+    {
+        var options = new JsonSerializerOptions();
+        options.Converters.Add(new ChartInstrumentJsonConverter());
+        return options;
+    }).Value;
 }

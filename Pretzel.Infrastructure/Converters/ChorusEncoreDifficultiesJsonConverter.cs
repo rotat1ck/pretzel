@@ -1,7 +1,6 @@
 ﻿using Pretzel.Core.Enums;
 using Pretzel.Core.Models;
 using System.Text.Json;
-using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
 namespace Pretzel.Infrastructure.Converters;
@@ -12,20 +11,12 @@ public class ChorusEncoreDifficultiesJsonConverter : JsonConverter<IEnumerable<C
     {
         var dict = new Dictionary<InstrumentType, HashSet<DifficultyLevel>>();
 
-        while (reader.Read())
+        using var doc = JsonDocument.ParseValue(ref reader);
+        var root = doc.RootElement;
+
+        foreach (var obj in root.EnumerateArray())
         {
-            if (reader.TokenType == JsonTokenType.EndArray)
-            {
-                break;
-            }
-
-            var obj = JsonObject.Parse(ref reader) as JsonObject;
-            if (obj is null)
-            {
-                continue;
-            }
-
-            var kvp = ConvertToKeyValuePair(obj);
+            var kvp = ParseInstrumentDifficulty(obj);
             if (!kvp.HasValue)
             {
                 continue;
@@ -42,9 +33,9 @@ public class ChorusEncoreDifficultiesJsonConverter : JsonConverter<IEnumerable<C
         return dict.Select(kvp => new ChartInstrument { AvailableDifficulties = kvp.Value, Instrument = kvp.Key });
     }
 
-    private KeyValuePair<InstrumentType, DifficultyLevel>? ConvertToKeyValuePair(JsonObject obj)
+    private KeyValuePair<InstrumentType, DifficultyLevel>? ParseInstrumentDifficulty(JsonElement obj)
     {
-        var instrumentName = obj["instrument"]?.GetValue<string>();
+        var instrumentName = obj.GetProperty("instrument").GetString();
         if (instrumentName is null)
         {
             return default;
@@ -56,7 +47,7 @@ public class ChorusEncoreDifficultiesJsonConverter : JsonConverter<IEnumerable<C
             return default;
         }
 
-        var instrumentDifficulty = obj["difficulty"]?.GetValue<string>();
+        var instrumentDifficulty = obj.GetProperty("difficulty").GetString();
         if (instrumentDifficulty is null)
         {
             return default;
@@ -68,7 +59,7 @@ public class ChorusEncoreDifficultiesJsonConverter : JsonConverter<IEnumerable<C
             return default;
         }
 
-        return new KeyValuePair<InstrumentType, DifficultyLevel>((InstrumentType)instrumentType, (DifficultyLevel)difficultyLevel);
+        return new KeyValuePair<InstrumentType, DifficultyLevel>(instrumentType.Value, difficultyLevel.Value);
     }
 
     public override void Write(Utf8JsonWriter writer, IEnumerable<ChartInstrument> value, JsonSerializerOptions options)

@@ -45,26 +45,19 @@ public class ChorusEncoreChartResponse : IJsonOnDeserialized
 
     public void OnDeserialized()
     {
-        var options = new JsonSerializerOptions();
-        options.Converters.Add(new ChartInstrumentJsonConverter());
-
-        // first priority - rating
-        var chartInstruments = JsonSerializer.Deserialize<IEnumerable<ChartInstrument>>(ExtensionData, options);
+        var chartInstruments = JsonSerializer.Deserialize<IEnumerable<ChartInstrument>>(ExtensionData, chartInstrumentsSerializerOptions);
         if (chartInstruments is not null)
         {
             Instruments = chartInstruments;
         }
 
-        // difficulties
         foreach (var instrument in Instruments)
         {
             var difficulties = ChartData.Difficulties.FirstOrDefault(ci => ci.Instrument == instrument.Instrument)?.AvailableDifficulties;
-            if (difficulties is null)
+            if (difficulties is not null)
             {
-                continue;
+                instrument.AvailableDifficulties = difficulties;
             }
-
-            instrument.AvailableDifficulties = difficulties;
         }
     }
 
@@ -77,4 +70,11 @@ public class ChorusEncoreChartResponse : IJsonOnDeserialized
         [JsonConverter(typeof(ChorusEncoreDifficultiesJsonConverter))]
         public required IEnumerable<ChartInstrument> Difficulties { get; set; }
     }
+
+    private static readonly JsonSerializerOptions chartInstrumentsSerializerOptions = new Lazy<JsonSerializerOptions>(() =>
+    {
+        var options = new JsonSerializerOptions();
+        options.Converters.Add(new ChartInstrumentJsonConverter());
+        return options;
+    }).Value;
 }
