@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Pretzel.Core.Enums;
 using Pretzel.Core.Models;
+using Pretzel.Core.Models.Search;
 using Pretzel.Infrastructure.DTOs.Search;
 using Pretzel.Infrastructure.DTOs.Search.ChorusEncore;
 
@@ -23,5 +24,13 @@ public class ChorusEncoreProfile : Profile
 
         CreateMap<ChorusEncoreSearchResponse, SearchResponse>()
             .ForMember(dest => dest.Returned, opt => opt.AddTransform(_ => 10));
+
+        CreateMap<ChartSearchOptions, ChorusEncoreSearchRequest>();
+        CreateMap<ChartSearchAdvancedOptions, ChorusEncoreSearchAdvancedRequest>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => new ChorusEncoreSearchFilter { Value = src.Name }))
+            .ForMember(dest => dest.Album, opt => opt.MapFrom(src => new ChorusEncoreSearchFilter { Value = src.Album }))
+            .ForMember(dest => dest.Artist, opt => opt.MapFrom(src => new ChorusEncoreSearchFilter { Value = src.Artist }))
+            .ForMember(dest => dest.Charter, opt => opt.MapFrom(src => new ChorusEncoreSearchFilter { Value = src.Charter }))
+            .ForMember(dest => dest.Genre, opt => opt.MapFrom(src => new ChorusEncoreSearchFilter { Value = src.Genre }));
     }
 }

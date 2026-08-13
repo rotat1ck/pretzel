@@ -1,5 +1,6 @@
 ﻿using Pretzel.Core.Enums;
 using Pretzel.Core.Models;
+using Pretzel.Core.Models.Search;
 
 namespace Pretzel.Core.Interfaces;
 
