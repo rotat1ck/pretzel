@@ -13,7 +13,7 @@ public static class DependencyInjection
 
         services.AddHttpClient(ChartSource.ChorusEncore.ToString(), client =>
         {
-            client.BaseAddress = new Uri("https://enchor.us");
+            client.BaseAddress = new Uri("https://api.enchor.us");
         });
 
         services.AddHttpClient(ChartSource.RhythmVerse.ToString(), client =>
@@ -21,7 +21,7 @@ public static class DependencyInjection
             client.BaseAddress = new Uri("https://rhythmverse.co");
         });
 
-        services.AddSingleton<IChartSearchStrategy, ChorusEncoreSearchStrategy>();
+        services.AddKeyedSingleton<IChartSearchStrategy, ChorusEncoreSearchStrategy>(ChartSource.ChorusEncore);
 
         return services;
     }

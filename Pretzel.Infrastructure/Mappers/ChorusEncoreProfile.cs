@@ -27,10 +27,10 @@ public class ChorusEncoreProfile : Profile
 
         CreateMap<ChartSearchOptions, ChorusEncoreSearchRequest>();
         CreateMap<ChartSearchAdvancedOptions, ChorusEncoreSearchAdvancedRequest>()
-            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => new ChorusEncoreSearchFilter { Value = src.Name }))
-            .ForMember(dest => dest.Album, opt => opt.MapFrom(src => new ChorusEncoreSearchFilter { Value = src.Album }))
-            .ForMember(dest => dest.Artist, opt => opt.MapFrom(src => new ChorusEncoreSearchFilter { Value = src.Artist }))
-            .ForMember(dest => dest.Charter, opt => opt.MapFrom(src => new ChorusEncoreSearchFilter { Value = src.Charter }))
-            .ForMember(dest => dest.Genre, opt => opt.MapFrom(src => new ChorusEncoreSearchFilter { Value = src.Genre }));
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => new ChorusEncoreSearchFilter { Value = src.Name ?? string.Empty }))
+            .ForMember(dest => dest.Album, opt => opt.MapFrom(src => new ChorusEncoreSearchFilter { Value = src.Album ?? string.Empty }))
+            .ForMember(dest => dest.Artist, opt => opt.MapFrom(src => new ChorusEncoreSearchFilter { Value = src.Artist ?? string.Empty }))
+            .ForMember(dest => dest.Charter, opt => opt.MapFrom(src => new ChorusEncoreSearchFilter { Value = src.Charter ?? string.Empty }))
+            .ForMember(dest => dest.Genre, opt => opt.MapFrom(src => new ChorusEncoreSearchFilter { Value = src.Genre ?? string.Empty }));
     }
 }

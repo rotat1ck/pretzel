@@ -6,6 +6,8 @@ using Pretzel.Core.Models.Search;
 using Pretzel.Infrastructure.DTOs.Search;
 using Pretzel.Infrastructure.DTOs.Search.ChorusEncore;
 using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Pretzel.Infrastructure.Services.Search;
 
@@ -13,6 +15,12 @@ public class ChorusEncoreSearchStrategy(IHttpClientFactory clientFactory, IMappe
 {
     private readonly IHttpClientFactory clientFactory = clientFactory;
     private readonly IMapper mapper = mapper;
+
+    private static readonly JsonSerializerOptions jsonOptions = new JsonSerializerOptions
+    {
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    };
 
     public ChartSource Source => ChartSource.ChorusEncore;
 
@@ -34,34 +42,36 @@ public class ChorusEncoreSearchStrategy(IHttpClientFactory clientFactory, IMappe
     public async Task<IEnumerable<Chart>> SearchAsync(ChartSearchOptions options)
     {
         var client = clientFactory.CreateClient(Source.ToString());
-        var message = ComposeRequestMessage(options);
+        var message = ComposeRequestMessage(client, options);
         var response = await client.SendAsync(message);
         response.EnsureSuccessStatusCode();
 
-        var content = await response.Content.ReadFromJsonAsync<SearchResponse>();
-        return content!.Items;
+        var content = await response.Content.ReadFromJsonAsync<ChorusEncoreSearchResponse>();
+        content?.Items = content.Items.DistinctBy(chart => chart.Ordering);
+        return mapper.Map<SearchResponse>(content).Items;
     }
 
-    private HttpRequestMessage ComposeRequestMessage(ChartSearchOptions options)
+    private HttpRequestMessage ComposeRequestMessage(HttpClient client, ChartSearchOptions options)
     {
         object payload;
-        string uri = "/search";
+        string uri;
 
         if (options is ChartSearchAdvancedOptions advanced)
         {
-            uri += "/advanced";
+            uri = "/search/advanced";
             payload = mapper.Map<ChorusEncoreSearchAdvancedRequest>(advanced);
         }
         else
         {
+            uri = "/search";
             payload = mapper.Map<ChorusEncoreSearchRequest>(options);
         }
 
         return new HttpRequestMessage
         {
-            RequestUri = new Uri(uri),
+            RequestUri = new Uri(client.BaseAddress!, uri),
             Method = HttpMethod.Post,
-            Content = JsonContent.Create(payload)
+            Content = JsonContent.Create(payload, options: jsonOptions)
         };
     }
 }

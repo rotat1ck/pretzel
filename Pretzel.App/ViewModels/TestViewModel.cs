@@ -1,20 +1,21 @@
 ﻿using AutoMapper;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Pretzel.Core.Enums;
+using Pretzel.Core.Interfaces;
 using Pretzel.Core.Models;
-using Pretzel.Infrastructure.DTOs.Search;
-using Pretzel.Infrastructure.DTOs.Search.ChorusEncore;
-using Pretzel.Infrastructure.DTOs.Search.RhythmVerse;
-using System.Net.Http.Json;
+using Pretzel.Core.Models.Search;
 
 namespace Pretzel.App.ViewModels;
 
 public partial class TestViewModel : ObservableObject
 {
     private readonly IMapper mapper;
+    private readonly IChartSearchStrategy chorusStrategy;
 
-    public TestViewModel(IMapper mapper)
+    public TestViewModel(IMapper mapper, [FromKeyedServices(ChartSource.ChorusEncore)] IChartSearchStrategy chorusStrategy)
     {
         this.mapper = mapper;
+        this.chorusStrategy = chorusStrategy;
         _ = Test();
     }
 
@@ -23,39 +24,14 @@ public partial class TestViewModel : ObservableObject
 
     public async Task Test()
     {
-        var chorusClient = new HttpClient();
-        var rhythmClient = new HttpClient();
-
-        chorusClient.BaseAddress = new Uri("https://api.enchor.us");
-        rhythmClient.BaseAddress = new Uri("https://rhythmverse.co");
-
-        var rhythmFormData = new FormUrlEncodedContent(new Dictionary<string, string>
+        var searchOptions = new ChartSearchAdvancedOptions
         {
-            { "text", "Cadmium Colors" },
-            { "data_type", "full" },
-            { "page", "1" },
-            { "records", "10" },
-        });
-
-        var chorusJson = new
-        {
-            search = "Jamie Paige - Cadmium Colors",
-            page = 1
+            Charter = "3-UP",
+            Artist = "Jamie Paige",
+            Page = 1
         };
 
-        var chorusContent = await chorusClient.PostAsJsonAsync("search", chorusJson);
-        var rhythmResponse = await rhythmClient.PostAsync("api/all/songfiles/search/live", rhythmFormData);
-
-        var chorusDto = await chorusContent.Content.ReadFromJsonAsync<ChorusEncoreSearchResponse>();
-        var rhythmDto = await rhythmResponse.Content.ReadFromJsonAsync<RhythmVerseSearchResponse>();
-
-        var searchResponse = mapper.Map<SearchResponse>(chorusDto);
-        var toCombine = mapper.Map<SearchResponse>(rhythmDto);
-
-        var response = searchResponse.Items as List<Chart>;
-        response.AddRange(toCombine.Items);
-
-
-        Charts = response;
+        var charts = await chorusStrategy.SearchAsync(searchOptions) as List<Chart>;
+        Charts = charts!;
     }
 }

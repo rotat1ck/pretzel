@@ -34,6 +34,9 @@ public class ChorusEncoreChartResponse : IJsonOnDeserialized
     public string? AlbumArtUri { get; set; }
 
 
+    [JsonPropertyName("ordering")]
+    public required int Ordering { get; set; }
+
     [JsonPropertyName("notesData")]
     public required NotesData ChartData { get; set; }
 
