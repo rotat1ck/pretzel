@@ -26,6 +26,8 @@ public static class DependencyInjection
         services.AddKeyedSingleton<IChartSearchStrategy, ChorusEncoreSearchStrategy>(ChartSource.ChorusEncore);
         services.AddKeyedSingleton<IChartSearchStrategy, RhythmVerseSearchStrategy>(ChartSource.RhythmVerse);
 
+        services.AddSingleton<IChartSearchService, ChartSearchService>();
+
         return services;
     }
 }

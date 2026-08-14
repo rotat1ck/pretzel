@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Pretzel.Core.Enums;
 using Pretzel.Core.Interfaces;
 using Pretzel.Core.Models;
 using Pretzel.Core.Models.Search;
@@ -10,15 +9,12 @@ namespace Pretzel.App.ViewModels;
 public partial class TestViewModel : ObservableObject
 {
     private readonly IMapper mapper;
-    private readonly IChartSearchStrategy chorusStrategy;
-    private readonly IChartSearchStrategy rhythmStrategy;
+    private readonly IChartSearchService searchService;
 
-    public TestViewModel(IMapper mapper, [FromKeyedServices(ChartSource.ChorusEncore)] IChartSearchStrategy chorusStrategy,
-        [FromKeyedServices(ChartSource.RhythmVerse)] IChartSearchStrategy rhythmStrategy)
+    public TestViewModel(IMapper mapper, IChartSearchService searchService)
     {
         this.mapper = mapper;
-        this.chorusStrategy = chorusStrategy;
-        this.rhythmStrategy = rhythmStrategy;
+        this.searchService = searchService;
         _ = Test();
     }
 
@@ -34,18 +30,20 @@ public partial class TestViewModel : ObservableObject
         //    Page = 1
         //};
 
-        var searchOptions = new ChartSearchOptions
-        {
-            Search = "Jamie Paige",
-            Page = 1
-        };
+        //var searchOptions = new ChartSearchOptions
+        //{
+        //    Search = "Jamie Paige",
+        //    Page = 1
+        //};
 
-        var charts = await chorusStrategy.SearchAsync(searchOptions);
-        var chartsRhythm = await rhythmStrategy.SearchAsync(searchOptions);
-        if (charts is not null && chartsRhythm is not null)
-        {
-            charts.Count += chartsRhythm.Count;
-            charts.Returned += chartsRhythm.Returned;
-        }
+        //var charts = await chorusStrategy.SearchAsync(searchOptions);
+        //var chartsRhythm = await rhythmStrategy.SearchAsync(searchOptions);
+        //if (charts is not null && chartsRhythm is not null)
+        //{
+        //    charts.Count += chartsRhythm.Count;
+        //    charts.Returned += chartsRhythm.Returned;
+        //}
+
+        await searchService.SearchAsync(new ChartSearchOptions(), default);
     }
 }

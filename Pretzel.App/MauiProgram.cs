@@ -2,7 +2,10 @@
 using Microsoft.Maui.LifecycleEvents;
 using Microsoft.Maui.Platform;
 using Pretzel.App.ViewModels;
+using Pretzel.Core.Interfaces;
+using Pretzel.Core.Models.Search;
 using Pretzel.Infrastructure;
+using Pretzel.Infrastructure.Services.Search;
 
 namespace Pretzel.App;
 
@@ -42,13 +45,22 @@ public static class MauiProgram
                 });
 #endif
             })
-            .Services.AddTransient<TestViewModel>()
-            .AddInfrastructure();
+            .Services.AddTransient<TestViewModel>();
+
+        builder.Services.AddInfrastructure();
+        builder.Services.RegisterSettingProviders();
 
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
 
         return builder.Build();
+    }
+
+    public static IServiceCollection RegisterSettingProviders(this IServiceCollection services)
+    {
+        services.AddSingleton<ISettingProvider<ChartSearchSettings>>(provider => new ChartSearchSettingsProvider(FileSystem.Current.AppDataDirectory));
+
+        return services;
     }
 }
