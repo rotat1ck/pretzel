@@ -34,12 +34,10 @@ public class RhythmVerseProfile : Profile
 
 
         CreateMap<ChartSearchOptions, RhythmVerseSearchRequest>()
-            .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Search))
-            .ForMember(dest => dest.Records, opt => opt.MapFrom(src => src.Records <= 0 ? 10 : src.Records));
+            .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Search));
 
         CreateMap<ChartSearchAdvancedOptions, RhythmVerseSearchRequest>()
             .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Name))
-            .ForMember(dest => dest.Records, opt => opt.MapFrom(src => src.Records <= 0 ? 10 : src.Records))
             .ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.Charter));
     }
 }

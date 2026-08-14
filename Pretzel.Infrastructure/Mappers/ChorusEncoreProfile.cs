@@ -22,7 +22,7 @@ public class ChorusEncoreProfile : Profile
             });
 
         CreateMap<ChorusEncoreSearchResponse, ChartSearchResults>()
-            .ForMember(dest => dest.Returned, opt => opt.MapFrom(src => src.Count < 10 ? src.Count : 10));
+            .ForMember(dest => dest.Returned, opt => opt.MapFrom(src => Math.Min(src.Count, ChartSearchOptions.DefaultPageSize)));
 
         CreateMap<ChartSearchOptions, ChorusEncoreSearchRequest>();
         CreateMap<ChartSearchAdvancedOptions, ChorusEncoreSearchAdvancedRequest>()

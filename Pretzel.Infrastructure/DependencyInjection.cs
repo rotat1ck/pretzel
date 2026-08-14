@@ -14,11 +14,13 @@ public static class DependencyInjection
         services.AddHttpClient(ChartSource.ChorusEncore.ToString(), client =>
         {
             client.BaseAddress = new Uri("https://api.enchor.us");
+            client.Timeout = TimeSpan.FromSeconds(5);
         });
 
         services.AddHttpClient(ChartSource.RhythmVerse.ToString(), client =>
         {
             client.BaseAddress = new Uri("https://rhythmverse.co");
+            client.Timeout = TimeSpan.FromSeconds(5);
         });
 
         services.AddKeyedSingleton<IChartSearchStrategy, ChorusEncoreSearchStrategy>(ChartSource.ChorusEncore);

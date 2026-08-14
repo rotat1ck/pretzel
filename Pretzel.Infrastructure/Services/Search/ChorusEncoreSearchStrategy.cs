@@ -34,23 +34,14 @@ public class ChorusEncoreSearchStrategy(IHttpClientFactory clientFactory, IMappe
 
     public async Task<ChartSearchResults> SearchAsync(ChartSearchOptions options)
     {
-        try
-        {
+        var client = clientFactory.CreateClient(Source.ToString());
+        var message = ComposeRequestMessage(client, options);
+        var response = await client.SendAsync(message);
+        response.EnsureSuccessStatusCode();
 
-
-            var client = clientFactory.CreateClient(Source.ToString());
-            var message = ComposeRequestMessage(client, options);
-            var response = await client.SendAsync(message);
-            response.EnsureSuccessStatusCode();
-
-            var content = await response.Content.ReadFromJsonAsync<ChorusEncoreSearchResponse>();
-            content?.Items = content.Items.DistinctBy(chart => chart.Ordering);
-            return mapper.Map<ChartSearchResults>(content);
-        }
-        catch (Exception ex)
-        {
-            return default;
-        }
+        var content = await response.Content.ReadFromJsonAsync<ChorusEncoreSearchResponse>();
+        content?.Items = content.Items.DistinctBy(chart => chart.Ordering);
+        return mapper.Map<ChartSearchResults>(content);
     }
 
     private HttpRequestMessage ComposeRequestMessage(HttpClient client, ChartSearchOptions options)
