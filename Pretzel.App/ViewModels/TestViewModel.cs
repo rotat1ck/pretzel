@@ -11,11 +11,14 @@ public partial class TestViewModel : ObservableObject
 {
     private readonly IMapper mapper;
     private readonly IChartSearchStrategy chorusStrategy;
+    private readonly IChartSearchStrategy rhythmStrategy;
 
-    public TestViewModel(IMapper mapper, [FromKeyedServices(ChartSource.ChorusEncore)] IChartSearchStrategy chorusStrategy)
+    public TestViewModel(IMapper mapper, [FromKeyedServices(ChartSource.ChorusEncore)] IChartSearchStrategy chorusStrategy,
+        [FromKeyedServices(ChartSource.RhythmVerse)] IChartSearchStrategy rhythmStrategy)
     {
         this.mapper = mapper;
         this.chorusStrategy = chorusStrategy;
+        this.rhythmStrategy = rhythmStrategy;
         _ = Test();
     }
 
@@ -24,14 +27,30 @@ public partial class TestViewModel : ObservableObject
 
     public async Task Test()
     {
+        //var searchOptions = new ChartSearchAdvancedOptions
+        //{
+        //    Charter = "3-UP",
+        //    Artist = "Jamie Paige",
+        //    Page = 1
+        //};
+
         var searchOptions = new ChartSearchAdvancedOptions
         {
-            Charter = "3-UP",
-            Artist = "Jamie Paige",
+            Year = 2025,
+            Name = "BIRDBRAIN",
             Page = 1
         };
 
         var charts = await chorusStrategy.SearchAsync(searchOptions) as List<Chart>;
-        Charts = charts!;
+        var chartsRhythm = await rhythmStrategy.SearchAsync(searchOptions) as List<Chart>;
+        if (charts is not null)
+        {
+            Charts = charts;
+
+            if (chartsRhythm is not null)
+            {
+                charts.AddRange(chartsRhythm);
+            }
+        }
     }
 }

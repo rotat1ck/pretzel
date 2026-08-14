@@ -31,6 +31,7 @@ public class ChorusEncoreProfile : Profile
             .ForMember(dest => dest.Album, opt => opt.MapFrom(src => new ChorusEncoreSearchFilter { Value = src.Album ?? string.Empty }))
             .ForMember(dest => dest.Artist, opt => opt.MapFrom(src => new ChorusEncoreSearchFilter { Value = src.Artist ?? string.Empty }))
             .ForMember(dest => dest.Charter, opt => opt.MapFrom(src => new ChorusEncoreSearchFilter { Value = src.Charter ?? string.Empty }))
-            .ForMember(dest => dest.Genre, opt => opt.MapFrom(src => new ChorusEncoreSearchFilter { Value = src.Genre ?? string.Empty }));
+            .ForMember(dest => dest.Genre, opt => opt.MapFrom(src => new ChorusEncoreSearchFilter { Value = src.Genre ?? string.Empty }))
+            .ForMember(dest => dest.Year, opt => opt.MapFrom(src => new ChorusEncoreSearchFilter { Value = src.Year.ToString() ?? string.Empty }));
     }
 }

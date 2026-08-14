@@ -7,7 +7,7 @@ public class ChorusEncoreSearchAdvancedRequest : ChorusEncoreSearchRequest
     public required ChorusEncoreSearchFilter Album { get; set; }
     public required ChorusEncoreSearchFilter Charter { get; set; }
     public required ChorusEncoreSearchFilter Genre { get; set; }
-    public int? Year { get; set; }
+    public required ChorusEncoreSearchFilter Year { get; set; }
 }
 
 public class ChorusEncoreSearchFilter

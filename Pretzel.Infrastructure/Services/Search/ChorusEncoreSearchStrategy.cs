@@ -31,11 +31,6 @@ public class ChorusEncoreSearchStrategy(IHttpClientFactory clientFactory, IMappe
          * it'll be less overengeneering, in future (other search sources)
          * this might be refactored for a runtime reflection properties check
         */
-        //if (options is ChartSearchAdvancedOptions advancedOptions)
-        //{
-        //    return advancedOptions.Album is null;
-        //}
-
         return true;
     }
 

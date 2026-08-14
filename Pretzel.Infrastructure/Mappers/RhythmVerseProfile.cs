@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Pretzel.Core.Enums;
 using Pretzel.Core.Models;
+using Pretzel.Core.Models.Search;
 using Pretzel.Infrastructure.DTOs.Search;
 using Pretzel.Infrastructure.DTOs.Search.RhythmVerse;
 
@@ -31,5 +32,15 @@ public class RhythmVerseProfile : Profile
             .ForMember(dest => dest.Count, opt => opt.MapFrom(src => src.Data.Records.Count))
             .ForMember(dest => dest.Returned, opt => opt.MapFrom(src => src.Data.Records.Returned))
             .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Data.Items));
+
+
+        CreateMap<ChartSearchOptions, RhythmVerseSearchRequest>()
+            .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Search))
+            .ForMember(dest => dest.Records, opt => opt.MapFrom(src => src.Records <= 0 ? 10 : src.Records));
+
+        CreateMap<ChartSearchAdvancedOptions, RhythmVerseSearchRequest>()
+            .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Name))
+            .ForMember(dest => dest.Records, opt => opt.MapFrom(src => src.Records <= 0 ? 10 : src.Records))
+            .ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.Charter));
     }
 }

@@ -22,6 +22,7 @@ public static class DependencyInjection
         });
 
         services.AddKeyedSingleton<IChartSearchStrategy, ChorusEncoreSearchStrategy>(ChartSource.ChorusEncore);
+        services.AddKeyedSingleton<IChartSearchStrategy, RhythmVerseSearchStrategy>(ChartSource.RhythmVerse);
 
         return services;
     }
