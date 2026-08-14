@@ -2,21 +2,25 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:models="clr-namespace:Pretzel.Core.Models;assembly=Pretzel.Core"
+             xmlns:searchModels="clr-namespace:Pretzel.Core.Models.Search;assembly=Pretzel.Core"
+             
              xmlns:viewModels="clr-namespace:Pretzel.App.ViewModels"
              x:Class="Pretzel.App.Views.TestPage"
              x:DataType="viewModels:TestViewModel">
-    
+
     <VerticalStackLayout>
+        <Button Command="{Binding TestCommand}" Text="Search"/>
+
         <CollectionView ItemsSource="{Binding Charts}">
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:Chart">
-                    <HorizontalStackLayout BackgroundColor="FloralWhite">
-                        <Label Text="{Binding Name}" />
-                        <Label Text="{Binding Charter}" />
-                        <Label Text="{Binding Album}" />
+                <DataTemplate x:DataType="searchModels:ChartSearchResults">
+                    <HorizontalStackLayout Background="DarkSlateGrey" Padding="5,5,5,5">
+                        <Label Text="{Binding ChartSource}" />
+                        <Label Text="{Binding Count, StringFormat=' - returned {0}'}" />
                     </HorizontalStackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+
     </VerticalStackLayout>
 </ContentPage>

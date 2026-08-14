@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Pretzel.Core.Interfaces;
-using Pretzel.Core.Models;
 using Pretzel.Core.Models.Search;
 
 namespace Pretzel.App.ViewModels;
@@ -15,12 +15,12 @@ public partial class TestViewModel : ObservableObject
     {
         this.mapper = mapper;
         this.searchService = searchService;
-        _ = Test();
     }
 
     [ObservableProperty]
-    private List<Chart> charts;
+    private List<ChartSearchResults> charts = new();
 
+    [RelayCommand]
     public async Task Test()
     {
         //var searchOptions = new ChartSearchAdvancedOptions
@@ -30,11 +30,11 @@ public partial class TestViewModel : ObservableObject
         //    Page = 1
         //};
 
-        //var searchOptions = new ChartSearchOptions
-        //{
-        //    Search = "Jamie Paige",
-        //    Page = 1
-        //};
+        var searchOptions = new ChartSearchOptions
+        {
+            Search = "Jamie Paige",
+            Page = 1
+        };
 
         //var charts = await chorusStrategy.SearchAsync(searchOptions);
         //var chartsRhythm = await rhythmStrategy.SearchAsync(searchOptions);
@@ -44,6 +44,12 @@ public partial class TestViewModel : ObservableObject
         //    charts.Returned += chartsRhythm.Returned;
         //}
 
-        await searchService.SearchAsync(new ChartSearchOptions(), default);
+        await foreach (var result in searchService.SearchAsync(searchOptions, new()))
+        {
+            if (result.ProblemDetails is null)
+            {
+                Charts.Add(result);
+            }
+        }
     }
 }
