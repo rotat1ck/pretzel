@@ -34,23 +34,18 @@ public partial class TestViewModel : ObservableObject
         //    Page = 1
         //};
 
-        var searchOptions = new ChartSearchAdvancedOptions
+        var searchOptions = new ChartSearchOptions
         {
-            Year = 2025,
-            Name = "BIRDBRAIN",
+            Search = "Jamie Paige",
             Page = 1
         };
 
-        var charts = await chorusStrategy.SearchAsync(searchOptions) as List<Chart>;
-        var chartsRhythm = await rhythmStrategy.SearchAsync(searchOptions) as List<Chart>;
-        if (charts is not null)
+        var charts = await chorusStrategy.SearchAsync(searchOptions);
+        var chartsRhythm = await rhythmStrategy.SearchAsync(searchOptions);
+        if (charts is not null && chartsRhythm is not null)
         {
-            Charts = charts;
-
-            if (chartsRhythm is not null)
-            {
-                charts.AddRange(chartsRhythm);
-            }
+            charts.Count += chartsRhythm.Count;
+            charts.Returned += chartsRhythm.Returned;
         }
     }
 }

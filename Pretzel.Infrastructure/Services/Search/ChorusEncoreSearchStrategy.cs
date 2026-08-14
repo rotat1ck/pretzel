@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using Pretzel.Core.Enums;
 using Pretzel.Core.Interfaces;
-using Pretzel.Core.Models;
 using Pretzel.Core.Models.Search;
-using Pretzel.Infrastructure.DTOs.Search;
 using Pretzel.Infrastructure.DTOs.Search.ChorusEncore;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -34,16 +32,25 @@ public class ChorusEncoreSearchStrategy(IHttpClientFactory clientFactory, IMappe
         return true;
     }
 
-    public async Task<IEnumerable<Chart>> SearchAsync(ChartSearchOptions options)
+    public async Task<ChartSearchResults> SearchAsync(ChartSearchOptions options)
     {
-        var client = clientFactory.CreateClient(Source.ToString());
-        var message = ComposeRequestMessage(client, options);
-        var response = await client.SendAsync(message);
-        response.EnsureSuccessStatusCode();
+        try
+        {
 
-        var content = await response.Content.ReadFromJsonAsync<ChorusEncoreSearchResponse>();
-        content?.Items = content.Items.DistinctBy(chart => chart.Ordering);
-        return mapper.Map<SearchResponse>(content).Items;
+
+            var client = clientFactory.CreateClient(Source.ToString());
+            var message = ComposeRequestMessage(client, options);
+            var response = await client.SendAsync(message);
+            response.EnsureSuccessStatusCode();
+
+            var content = await response.Content.ReadFromJsonAsync<ChorusEncoreSearchResponse>();
+            content?.Items = content.Items.DistinctBy(chart => chart.Ordering);
+            return mapper.Map<ChartSearchResults>(content);
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
     }
 
     private HttpRequestMessage ComposeRequestMessage(HttpClient client, ChartSearchOptions options)

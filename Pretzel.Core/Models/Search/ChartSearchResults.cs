@@ -1,8 +1,6 @@
-﻿using Pretzel.Core.Models;
+﻿namespace Pretzel.Core.Models.Search;
 
-namespace Pretzel.Infrastructure.DTOs.Search;
-
-public class SearchResponse
+public class ChartSearchResults
 {
     public required int Count { get; set; }
     public required int Returned { get; set; }

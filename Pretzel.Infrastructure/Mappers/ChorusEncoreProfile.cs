@@ -2,7 +2,6 @@
 using Pretzel.Core.Enums;
 using Pretzel.Core.Models;
 using Pretzel.Core.Models.Search;
-using Pretzel.Infrastructure.DTOs.Search;
 using Pretzel.Infrastructure.DTOs.Search.ChorusEncore;
 
 namespace Pretzel.Infrastructure.Mappers;
@@ -22,8 +21,8 @@ public class ChorusEncoreProfile : Profile
                 });
             });
 
-        CreateMap<ChorusEncoreSearchResponse, SearchResponse>()
-            .ForMember(dest => dest.Returned, opt => opt.AddTransform(_ => 10));
+        CreateMap<ChorusEncoreSearchResponse, ChartSearchResults>()
+            .ForMember(dest => dest.Returned, opt => opt.MapFrom(src => src.Count < 10 ? src.Count : 10));
 
         CreateMap<ChartSearchOptions, ChorusEncoreSearchRequest>();
         CreateMap<ChartSearchAdvancedOptions, ChorusEncoreSearchAdvancedRequest>()

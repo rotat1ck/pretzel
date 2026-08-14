@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using Pretzel.Core.Enums;
 using Pretzel.Core.Interfaces;
-using Pretzel.Core.Models;
 using Pretzel.Core.Models.Search;
-using Pretzel.Infrastructure.DTOs.Search;
 using Pretzel.Infrastructure.DTOs.Search.RhythmVerse;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -39,7 +37,7 @@ public class RhythmVerseSearchStrategy(IHttpClientFactory clientFactory, IMapper
         return true;
     }
 
-    public async Task<IEnumerable<Chart>> SearchAsync(ChartSearchOptions options)
+    public async Task<ChartSearchResults> SearchAsync(ChartSearchOptions options)
     {
         var client = clientFactory.CreateClient(Source.ToString());
         var message = ComposeRequestMessage(client, options);
@@ -47,7 +45,7 @@ public class RhythmVerseSearchStrategy(IHttpClientFactory clientFactory, IMapper
         response.EnsureSuccessStatusCode();
 
         var content = await response.Content.ReadFromJsonAsync<RhythmVerseSearchResponse>();
-        return mapper.Map<SearchResponse>(content).Items;
+        return mapper.Map<ChartSearchResults>(content);
     }
 
     private HttpRequestMessage ComposeRequestMessage(HttpClient client, ChartSearchOptions options)

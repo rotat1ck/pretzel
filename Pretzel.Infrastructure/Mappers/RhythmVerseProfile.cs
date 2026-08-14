@@ -2,7 +2,6 @@
 using Pretzel.Core.Enums;
 using Pretzel.Core.Models;
 using Pretzel.Core.Models.Search;
-using Pretzel.Infrastructure.DTOs.Search;
 using Pretzel.Infrastructure.DTOs.Search.RhythmVerse;
 
 namespace Pretzel.Infrastructure.Mappers;
@@ -28,7 +27,7 @@ public class RhythmVerseProfile : Profile
                 });
             });
 
-        CreateMap<RhythmVerseSearchResponse, SearchResponse>()
+        CreateMap<RhythmVerseSearchResponse, ChartSearchResults>()
             .ForMember(dest => dest.Count, opt => opt.MapFrom(src => src.Data.Records.Count))
             .ForMember(dest => dest.Returned, opt => opt.MapFrom(src => src.Data.Records.Returned))
             .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Data.Items));

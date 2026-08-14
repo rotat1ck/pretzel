@@ -1,6 +1,6 @@
 ﻿namespace Pretzel.Infrastructure.DTOs.Search.ChorusEncore;
 
-public abstract class ChorusEncoreSearchRequest
+public class ChorusEncoreSearchRequest
 {
     public int Page { get; set; }
 
