@@ -3,28 +3,27 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:Pretzel.App.ViewModels"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:comps="clr-namespace:Pretzel.App.Components"
              x:Class="Pretzel.App.Views.ExplorePage"
              x:DataType="viewModels:ExploreViewModel">
     <Grid RowDefinitions="Auto,*" Padding="24,32,24,0">
         <StackLayout>
-            <!-- above -->
             <HorizontalStackLayout>
                 <SearchBar x:Name="MySearchBar" Placeholder="Search..."/>
                 <Button Text="something"/>
                 <Button Text="Open" Command="{Binding ToggleAdvancedCommand}"/>
             </HorizontalStackLayout>
 
-            <!-- dropdown -->
             <toolkit:Expander IsExpanded="{Binding IsAdvancedSearch}">
+                <toolkit:Expander.Behaviors>
+                    <comps:ExpanderAnimationBehavior Duration="200"/>
+                </toolkit:Expander.Behaviors>
                 <Border>
                     <RoundRectangle BackgroundColor="Red" HeightRequest="500" />
-                    <Border.Behaviors>
-                        <toolkit:AnimationBehavior EventName="SizeChanged" AnimationType="{x:Static Easing.SpringOut}">
-                            
-                        </toolkit:AnimationBehavior>
-                    </Border.Behaviors>
                 </Border>
             </toolkit:Expander>
+
+            <Label FontSize="30" Text="this should move" />
         </StackLayout>
     </Grid>
 </ContentPage>
