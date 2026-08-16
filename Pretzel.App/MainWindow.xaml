@@ -14,8 +14,8 @@
                                        Spacing="16" 
                                        Padding="24,5,0,5">
 
-                    <titleBarComps:NavigationButtonView ButtonText="Library" TargetRoute="TestPage" ButtonImage="library_icon.png"/>
-                    <titleBarComps:NavigationButtonView ButtonText="Explore" TargetRoute="MainPage" ButtonImage="explore_icon.png" />
+                    <titleBarComps:NavigationButtonView ButtonText="Library" TargetRoute="MainPage" ButtonImage="library_icon.png"/>
+                    <titleBarComps:NavigationButtonView ButtonText="Explore" TargetRoute="ExplorePage" ButtonImage="explore_icon.png" />
                     <titleBarComps:NavigationButtonView ButtonText="Recent" ButtonImage="recent_icon.png" />
                     <titleBarComps:NavigationButtonView ButtonText="Settings" ButtonImage="settings_icon.png" />
 

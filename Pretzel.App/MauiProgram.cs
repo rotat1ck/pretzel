@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using CommunityToolkit.Maui;
+using Microsoft.Extensions.Logging;
 using Microsoft.Maui.LifecycleEvents;
 using Microsoft.Maui.Platform;
 using Pretzel.App.ViewModels;
@@ -16,6 +17,7 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -45,7 +47,7 @@ public static class MauiProgram
                 });
 #endif
             })
-            .Services.AddTransient<TestViewModel>();
+            .Services.AddTransient<ExploreViewModel>();
 
         builder.Services.AddInfrastructure();
         builder.Services.RegisterSettingProviders();

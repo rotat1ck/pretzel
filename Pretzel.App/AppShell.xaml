@@ -8,6 +8,6 @@
     FlyoutBehavior="Disabled">
 
     <ShellContent Route="MainPage" ContentTemplate="{DataTemplate local:MainPage}" />
-    <ShellContent Route="TestPage" ContentTemplate="{DataTemplate views:TestPage}" />
+    <ShellContent Route="ExplorePage" ContentTemplate="{DataTemplate views:ExplorePage}" />
 
 </Shell>

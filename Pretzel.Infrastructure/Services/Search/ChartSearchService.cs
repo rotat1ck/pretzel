@@ -8,12 +8,10 @@ public class ChartSearchService : IChartSearchService
 {
     private ISettingProvider<ChartSearchSettings> searchSettingProvider;
     private IServiceProvider serviceProvider;
-    private ChartSearchSettings searchSettings;
 
     public ChartSearchService(ISettingProvider<ChartSearchSettings> searchSettingProvider, IServiceProvider serviceProvider)
     {
         this.searchSettingProvider = searchSettingProvider;
-        this.searchSettings = searchSettingProvider.GetValue();
         this.serviceProvider = serviceProvider;
     }
 
