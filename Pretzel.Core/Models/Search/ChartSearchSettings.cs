@@ -16,7 +16,7 @@ public class ChartSearchSettings
             throw new ArgumentNullException(nameof(other));
         }
 
-        EnabledSources = other.EnabledSources;
+        EnabledSources = new(other.EnabledSources);
         ContinueSearchWithUnsupportedOptions = other.ContinueSearchWithUnsupportedOptions;
     }
 }

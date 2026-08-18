@@ -19,7 +19,13 @@ public partial class ExploreViewModel(IChartSearchService searchService) : BaseV
     [RelayCommand]
     public async Task Search()
     {
+        BasicSearchOptions.Page = 1;
+        BasicSearchOptions.Search = "Jamie Paige";
 
+        await foreach (var platformResult in searchService.SearchAsync(BasicSearchOptions, null))
+        {
+
+        }
     }
 
     [ObservableProperty]
@@ -41,6 +47,6 @@ public partial class ExploreViewModel(IChartSearchService searchService) : BaseV
     // if not needed to bind directly to these properties
     private List<ChartSearchResults> SourcesResults { get; set; }
 
-    private ChartSearchOptions BasicSearchOptions { get; set; }
+    private ChartSearchOptions BasicSearchOptions { get; set; } = new();
     private ChartSearchAdvancedOptions AdvancedSearchOptions { get; set; }
 }

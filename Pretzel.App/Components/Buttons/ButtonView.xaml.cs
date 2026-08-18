@@ -36,8 +36,8 @@ public partial class ButtonView : ContentView
 
     public object? ButtonCommandParameter
     {
-        get => GetValue(ButtonCommandProperty);
-        set => SetValue(ButtonCommandProperty, value);
+        get => GetValue(ButtonCommandParameterProperty);
+        set => SetValue(ButtonCommandParameterProperty, value);
     }
 
     public ButtonView()

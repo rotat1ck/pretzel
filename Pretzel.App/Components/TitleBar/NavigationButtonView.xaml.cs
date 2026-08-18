@@ -67,8 +67,11 @@ public partial class NavigationButtonView : ContentView
 
     private void OnLoaded(object? sender, EventArgs e)
     {
-        Shell.Current.Navigated += OnShellNavigated;
-        UpdateActiveState();
+        if (Shell.Current is not null)
+        {
+            Shell.Current.Navigated += OnShellNavigated;
+            UpdateActiveState();
+        }
     }
 
     private void OnShellNavigated(object? sender, ShellNavigatedEventArgs e)

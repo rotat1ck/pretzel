@@ -7,5 +7,5 @@ public interface IChartSearchStrategy
 {
     ChartSource Source { get; }
     bool CanHandle(ChartSearchOptions options);
-    Task<ChartSearchResults> SearchAsync(ChartSearchOptions options);
+    Task<ChartSearchResults> SearchAsync(ChartSearchOptions options, CancellationToken cancellationToken);
 }

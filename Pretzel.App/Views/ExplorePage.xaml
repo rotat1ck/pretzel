@@ -9,9 +9,12 @@
              x:DataType="viewModels:ExploreViewModel"
              Background="#081425">
 
-    <Border Stroke="#44474C" StrokeThickness="1" Margin="-2,0,-2,0"> <!-- trick for making stroke on top and bottom -->
+    <Border Stroke="#44474C" 
+            StrokeThickness="1" 
+            Margin="-2,0,-2,0"> <!-- trick for making stroke on top and bottom -->
 
-        <Grid RowDefinitions="Auto,*" Padding="24,32,24,0">
+        <Grid RowDefinitions="Auto,*" 
+              Padding="24,32,24,0">
             <StackLayout >
                 <HorizontalStackLayout>
                     <SearchBar x:Name="MySearchBar" Placeholder="Search..."/>
@@ -29,7 +32,7 @@
                 </toolkit:Expander>
 
                 <Label FontSize="30" Text="this should move" />
-                <buttons:PrimaryButtonView ButtonText="EXECUTE SEARCH" ButtonImage="settings_icon.png" HeightRequest="50" />
+                <buttons:PrimaryButtonView ButtonCommand="{Binding SearchCommand}" ButtonText="EXECUTE SEARCH" ButtonImage="settings_icon.png" HeightRequest="50" />
             </StackLayout>
         </Grid>
     </Border>

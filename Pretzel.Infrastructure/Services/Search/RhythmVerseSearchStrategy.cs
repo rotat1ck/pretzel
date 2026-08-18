@@ -37,11 +37,11 @@ public class RhythmVerseSearchStrategy(IHttpClientFactory clientFactory, IMapper
         return true;
     }
 
-    public async Task<ChartSearchResults> SearchAsync(ChartSearchOptions options)
+    public async Task<ChartSearchResults> SearchAsync(ChartSearchOptions options, CancellationToken cancellationToken)
     {
         var client = clientFactory.CreateClient(Source.ToString());
         var message = ComposeRequestMessage(client, options);
-        var response = await client.SendAsync(message);
+        var response = await client.SendAsync(message, cancellationToken);
         response.EnsureSuccessStatusCode();
 
         var content = await response.Content.ReadFromJsonAsync<RhythmVerseSearchResponse>();

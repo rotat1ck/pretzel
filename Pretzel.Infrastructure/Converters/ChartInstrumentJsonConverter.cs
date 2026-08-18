@@ -38,7 +38,7 @@ public class ChartInstrumentJsonConverter : JsonConverter<IEnumerable<ChartInstr
         }
 
         var instrumentRating = obj[propertyName]?.GetValue<int>();
-        if (instrumentRating is null)
+        if (instrumentRating is null || instrumentRating < 0)
         {
             return default;
         }

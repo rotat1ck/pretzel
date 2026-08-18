@@ -32,16 +32,13 @@ public class ChartSearchService : IChartSearchService
 
         var cancellationToken = cts?.Token ?? CancellationToken.None;
         var taskDict = strategies.ToDictionary(
-            strategy => strategy.SearchAsync(searchOptions),
+            strategy => strategy.SearchAsync(searchOptions, cancellationToken),
             strategy => strategy
         );
 
-        while (taskDict.Count > 0)
+        await foreach (var completedTask in Task.WhenEach(taskDict.Keys).WithCancellation(cancellationToken))
         {
-            var completedTask = await Task.WhenAny(taskDict.Keys);
-
             var strategy = taskDict[completedTask];
-            taskDict.Remove(completedTask);
 
             ChartSearchResults searchResult;
             try
@@ -65,10 +62,7 @@ public class ChartSearchService : IChartSearchService
                 };
             }
 
-            cancellationToken.ThrowIfCancellationRequested();
-
             yield return searchResult;
         }
-
     }
 }
