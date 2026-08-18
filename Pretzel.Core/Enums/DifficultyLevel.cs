@@ -30,7 +30,7 @@ public static class DifficultyLevelResolver
             return result;
         }
 
-        if (Enum.TryParse<DifficultyLevel>(difficultyLevel, ignoreCase: true, out result))
+        if (Enum.TryParse<DifficultyLevel>(difficultyLevel, ignoreCase: true, out result) && Enum.IsDefined(result))
         {
             return result;
         }

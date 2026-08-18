@@ -14,6 +14,11 @@ public class ChorusEncoreDifficultiesJsonConverter : JsonConverter<IEnumerable<C
         using var doc = JsonDocument.ParseValue(ref reader);
         var root = doc.RootElement;
 
+        if (root.ValueKind is not JsonValueKind.Array)
+        {
+            return default;
+        }
+
         foreach (var obj in root.EnumerateArray())
         {
             var kvp = ParseInstrumentDifficulty(obj);
@@ -35,25 +40,23 @@ public class ChorusEncoreDifficultiesJsonConverter : JsonConverter<IEnumerable<C
 
     private KeyValuePair<InstrumentType, DifficultyLevel>? ParseInstrumentDifficulty(JsonElement obj)
     {
-        var instrumentName = obj.GetProperty("instrument").GetString();
-        if (instrumentName is null)
+        if (!obj.TryGetProperty("instrument", out var instrumentProperty) || instrumentProperty.ValueKind is not JsonValueKind.String)
         {
             return default;
         }
 
-        InstrumentType? instrumentType = InstrumentTypeResolver.ResolveFromName(instrumentName);
+        InstrumentType? instrumentType = InstrumentTypeResolver.ResolveFromName(instrumentProperty.GetString()!);
         if (instrumentType is null)
         {
             return default;
         }
 
-        var instrumentDifficulty = obj.GetProperty("difficulty").GetString();
-        if (instrumentDifficulty is null)
+        if (!obj.TryGetProperty("difficulty", out var difficultyProperty) || difficultyProperty.ValueKind is not JsonValueKind.String)
         {
             return default;
         }
 
-        DifficultyLevel? difficultyLevel = DifficultyLevelResolver.ResolveFromName(instrumentDifficulty);
+        DifficultyLevel? difficultyLevel = DifficultyLevelResolver.ResolveFromName(difficultyProperty.GetString()!);
         if (difficultyLevel is null)
         {
             return default;

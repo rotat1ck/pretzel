@@ -18,7 +18,7 @@ public static class InstrumentTypeResolver
             return default;
         }
 
-        if (Enum.TryParse<InstrumentType>(instrumentName, ignoreCase: true, out var result))
+        if (Enum.TryParse<InstrumentType>(instrumentName, ignoreCase: true, out var result) && Enum.IsDefined(result))
         {
             return result;
         }

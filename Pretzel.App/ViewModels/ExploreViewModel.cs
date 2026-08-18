@@ -20,7 +20,7 @@ public partial class ExploreViewModel(IChartSearchService searchService) : BaseV
     public async Task Search()
     {
         BasicSearchOptions.Page = 1;
-        BasicSearchOptions.Search = "Jamie Paige";
+        BasicSearchOptions.Search = "123kfdgjgfdk123";
 
         await foreach (var platformResult in searchService.SearchAsync(BasicSearchOptions, null))
         {

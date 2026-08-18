@@ -16,6 +16,11 @@ public class RhythmVerseDifficultiesJsonConverter : JsonConverter<IEnumerable<Ch
         using var doc = JsonDocument.ParseValue(ref reader);
         var root = doc.RootElement;
 
+        if (root.ValueKind is not JsonValueKind.Object)
+        {
+            return default;
+        }
+
         foreach (var obj in root.EnumerateObject())
         {
             if (obj.Value.ValueKind != JsonValueKind.Object)
@@ -29,13 +34,19 @@ public class RhythmVerseDifficultiesJsonConverter : JsonConverter<IEnumerable<Ch
                 continue;
             }
 
-            dict[instrumentType.Value] = ParseDifficulties(obj.Value);
+            var difficulties = ParseDifficulties(obj.Value);
+            if (difficulties is null)
+            {
+                return default;
+            }
+
+            dict[instrumentType.Value] = difficulties;
         }
 
         return dict.Select(kvp => new ChartInstrument { Instrument = kvp.Key, AvailableDifficulties = kvp.Value });
     }
 
-    private HashSet<DifficultyLevel> ParseDifficulties(JsonElement obj)
+    private HashSet<DifficultyLevel>? ParseDifficulties(JsonElement obj)
     {
         var difficulties = new HashSet<DifficultyLevel>();
         if (obj.TryGetProperty("all", out var allProperty) &&
@@ -44,6 +55,11 @@ public class RhythmVerseDifficultiesJsonConverter : JsonConverter<IEnumerable<Ch
         {
             difficulties.UnionWith(AllDifficulties);
             return difficulties;
+        }
+
+        if (obj.ValueKind is not JsonValueKind.Object)
+        {
+            return default;
         }
 
         foreach (var difficulty in obj.EnumerateObject())

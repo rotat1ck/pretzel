@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using Pretzel.Infrastructure.Converters;
+using System.Text.Json.Serialization;
 
 namespace Pretzel.Infrastructure.DTOs.Search.RhythmVerse;
 
@@ -13,7 +14,8 @@ public class RhythmVerseSearchResponse
         public required RecordsData Records { get; set; }
 
         [JsonPropertyName("songs")]
-        public required IEnumerable<RhythmVerseChartResponse> Items { get; set; }
+        [JsonConverter(typeof(RhythmVerseSongsJsonConverter))]
+        public required IEnumerable<RhythmVerseChartResponse>? Items { get; set; }
 
         public class RecordsData
         {

@@ -59,7 +59,7 @@ public class ChartSearchSettingsProvider : ISettingProvider<ChartSearchSettings>
                 File.WriteAllText(filePath, json);
             }
         }
-        catch (JsonException)
+        catch (Exception)
         {
             File.Delete(filePath);
             settings = new();
