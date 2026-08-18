@@ -28,7 +28,7 @@ public partial class ButtonView : ContentView
         set => SetValue(ButtonTextProperty, value);
     }
 
-    public ICommand? ButtonCommand
+    public virtual ICommand? ButtonCommand
     {
         get => GetValue(ButtonCommandProperty) as ICommand;
         set => SetValue(ButtonCommandProperty, value);
@@ -45,12 +45,12 @@ public partial class ButtonView : ContentView
         InitializeComponent();
     }
 
-    private void OnPointerEntered(object sender, PointerEventArgs e)
+    protected virtual void OnPointerEntered(object sender, PointerEventArgs e)
     {
         border.Style = Resources["buttonBorderHoveredStyle"] as Style;
     }
 
-    private void OnPointerExited(object sender, PointerEventArgs e)
+    protected virtual void OnPointerExited(object sender, PointerEventArgs e)
     {
         border.Style = Resources["buttonBorderStyle"] as Style;
     }

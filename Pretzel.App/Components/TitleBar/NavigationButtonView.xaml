@@ -1,55 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<buttons:ButtonView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Pretzel.App.Components.TitleBar.NavigationButtonView"
-             Background="Transparent"
-             x:Name="root">
-
-    <VisualStateManager.VisualStateGroups>
-        <VisualStateGroup x:Name="States">
-            <VisualState x:Name="Navigated">
-                <VisualState.Setters>
-                    <Setter TargetName="buttonBorder" Property="Border.Background" Value="{StaticResource PrimaryDarkButton}"/>
-                    <Setter TargetName="buttonText" Property="Label.TextColor" Value="{StaticResource PrimaryLightText}"/>
-                </VisualState.Setters>
-            </VisualState>
-            <VisualState x:Name="NotNavigated">
-                <VisualState.Setters>
-                    <Setter TargetName="buttonBorder" Property="Border.Background" Value="Transparent"/>
-                    <Setter TargetName="buttonText" Property="Label.TextColor" Value="{StaticResource PrimaryLightText}"/>
-                </VisualState.Setters>
-            </VisualState>
-        </VisualStateGroup>
-    </VisualStateManager.VisualStateGroups>
-
-    <ContentView.GestureRecognizers>
-        <TapGestureRecognizer Command="{Binding Source={x:Reference root}, Path=NavigateCommand}" />
-    </ContentView.GestureRecognizers>
-
-    <Border x:Name="buttonBorder"
-            Stroke="Transparent"
-            StrokeShape="RoundRectangle 4">
-
-        <Grid ColumnDefinitions="Auto,Auto" 
-              ColumnSpacing="4"
-              Padding="12,0,12,0">
-
-            <Image Source="{Binding Source={x:Reference root}, Path=ButtonImage}" 
-                   Aspect="AspectFit"
-                   HeightRequest="16" WidthRequest="16">
-                <Image.Triggers>
-                    <Trigger TargetType="Image" Property="Source" Value="{x:Null}">
-                        <Setter Property="IsVisible" Value="False"/>
-                    </Trigger>
-                </Image.Triggers>
-            </Image>
-
-            <Label x:Name="buttonText"
-                   Grid.Column="1" 
-                   Text="{Binding Source={x:Reference root}, Path=ButtonText}" 
-                   FontSize="14" TextColor="{StaticResource PrimaryLightText}"
-                   FontFamily="Lexend"
-                   VerticalOptions="Center"/>
-        </Grid>
-    </Border>
-</ContentView>
+             xmlns:buttons="clr-namespace:Pretzel.App.Components.Buttons"
+             x:Class="Pretzel.App.Components.TitleBar.NavigationButtonView">
+    <buttons:ButtonView.Resources>
+        <ResourceDictionary Source="/Resources/Styles/Buttons/NavigationButtonStyle.xaml" />
+    </buttons:ButtonView.Resources>
+</buttons:ButtonView>
