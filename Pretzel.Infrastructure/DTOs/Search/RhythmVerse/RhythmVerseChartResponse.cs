@@ -79,10 +79,8 @@ public class RhythmVerseChartResponse : IJsonOnDeserialized
         }
     }
 
-    private static readonly JsonSerializerOptions chartInstrumentsSerializerOptions = new Lazy<JsonSerializerOptions>(() =>
+    private static readonly JsonSerializerOptions chartInstrumentsSerializerOptions = new JsonSerializerOptions
     {
-        var options = new JsonSerializerOptions();
-        options.Converters.Add(new ChartInstrumentJsonConverter());
-        return options;
-    }).Value;
+        Converters = { new ChartInstrumentJsonConverter() }
+    };
 }

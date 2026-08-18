@@ -10,8 +10,7 @@
         <TitleBar BackgroundColor="#081425" 
                   HeightRequest="50">
             <TitleBar.LeadingContent>
-                <HorizontalStackLayout Grid.Column="0" 
-                                       Spacing="16" 
+                <HorizontalStackLayout Spacing="16" 
                                        Padding="24,5,0,5">
 
                     <titleBarComps:NavigationButtonView ButtonText="Library" TargetRoute="MainPage" ButtonImage="library_icon.png"/>
