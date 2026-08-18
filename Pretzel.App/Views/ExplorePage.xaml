@@ -7,9 +7,9 @@
              xmlns:buttons="clr-namespace:Pretzel.App.Components.Buttons"
              x:Class="Pretzel.App.Views.ExplorePage"
              x:DataType="viewModels:ExploreViewModel"
-             Background="#081425">
+             Background="{StaticResource Primary}">
 
-    <Border Stroke="#44474C" 
+    <Border Stroke="{StaticResource PrimaryStroke}" 
             StrokeThickness="1" 
             Margin="-2,0,-2,0"> <!-- trick for making stroke on top and bottom -->
 

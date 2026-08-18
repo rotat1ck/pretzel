@@ -7,7 +7,7 @@
         x:Class="Pretzel.App.MainWindow">
     
     <Window.TitleBar>
-        <TitleBar BackgroundColor="#081425" 
+        <TitleBar BackgroundColor="{StaticResource Primary}" 
                   HeightRequest="50">
             <TitleBar.LeadingContent>
                 <HorizontalStackLayout Spacing="16" 
@@ -22,7 +22,11 @@
             </TitleBar.LeadingContent>
             
             <TitleBar.TrailingContent>
-                <RoundRectangle Margin="0,10,0,10" Background="#C4C6CD" Opacity="0.5" WidthRequest="1" StrokeThickness="0"/>
+                <RoundRectangle Margin="0,10,0,10" 
+                                Background="{StaticResource PrimaryStroke}" 
+                                Opacity="0.5" 
+                                WidthRequest="1" 
+                                StrokeThickness="0"/>
             </TitleBar.TrailingContent>
         </TitleBar>
     </Window.TitleBar>

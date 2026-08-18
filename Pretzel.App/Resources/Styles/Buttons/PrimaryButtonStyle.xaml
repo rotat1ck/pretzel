@@ -7,13 +7,13 @@
     </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="buttonBorderStyle" TargetType="Border" BasedOn="{StaticResource buttonBorderStyle}">
-        <Setter Property="Background" Value="#94A3B8" />
+        <Setter Property="Background" Value="{StaticResource PrimaryLightButton}" />
         <Setter Property="Stroke" Value="Transparent" />
         <Setter Property="StrokeShape" Value="RoundRectangle 4" />
     </Style>
 
     <Style x:Key="buttonBorderHoveredStyle" TargetType="Border" BasedOn="{StaticResource buttonBorderStyle}">
-        <Setter Property="Background" Value="Red" />
+        <Setter Property="Background" Value="{StaticResource PrimaryDarkButton}" />
     </Style>
 
     <Style x:Key="buttonGridStyle" TargetType="Grid" BasedOn="{StaticResource buttonGridStyle}">
@@ -32,7 +32,7 @@
     <Style x:Key="buttonLabelStyle" TargetType="Label" BasedOn="{StaticResource buttonLabelStyle}">
         <Setter Property="FontSize" Value="14" />
         <Setter Property="FontFamily" Value="Lexend" />
-        <Setter Property="TextColor" Value="#2B394B" />
+        <Setter Property="TextColor" Value="{StaticResource PrimaryDarkText}" />
         <Setter Property="HorizontalOptions" Value="Center" />
         <Setter Property="VerticalOptions" Value="Center" />
     </Style>

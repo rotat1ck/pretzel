@@ -9,14 +9,14 @@
         <VisualStateGroup x:Name="States">
             <VisualState x:Name="Navigated">
                 <VisualState.Setters>
-                    <Setter TargetName="buttonBorder" Property="Border.Background" Value="#3C4A5E"/>
-                    <Setter TargetName="buttonText" Property="Label.TextColor" Value="#ABB9D2"/>
+                    <Setter TargetName="buttonBorder" Property="Border.Background" Value="{StaticResource PrimaryDarkButton}"/>
+                    <Setter TargetName="buttonText" Property="Label.TextColor" Value="{StaticResource PrimaryLightText}"/>
                 </VisualState.Setters>
             </VisualState>
             <VisualState x:Name="NotNavigated">
                 <VisualState.Setters>
                     <Setter TargetName="buttonBorder" Property="Border.Background" Value="Transparent"/>
-                    <Setter TargetName="buttonText" Property="Label.TextColor" Value="#C4C6CD"/>
+                    <Setter TargetName="buttonText" Property="Label.TextColor" Value="{StaticResource PrimaryLightText}"/>
                 </VisualState.Setters>
             </VisualState>
         </VisualStateGroup>
@@ -47,7 +47,7 @@
             <Label x:Name="buttonText"
                    Grid.Column="1" 
                    Text="{Binding Source={x:Reference root}, Path=ButtonText}" 
-                   FontSize="14" TextColor="#C4C6CD"
+                   FontSize="14" TextColor="{StaticResource PrimaryLightText}"
                    FontFamily="Lexend"
                    VerticalOptions="Center"/>
         </Grid>
