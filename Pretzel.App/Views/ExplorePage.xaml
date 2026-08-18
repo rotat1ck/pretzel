@@ -5,25 +5,35 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:comps="clr-namespace:Pretzel.App.Components"
              x:Class="Pretzel.App.Views.ExplorePage"
-             x:DataType="viewModels:ExploreViewModel">
-    <Grid RowDefinitions="Auto,*" Padding="24,32,24,0">
-        <StackLayout>
-            <HorizontalStackLayout>
-                <SearchBar x:Name="MySearchBar" Placeholder="Search..."/>
-                <Button Text="something"/>
-                <Button Text="Open" Command="{Binding ToggleAdvancedCommand}"/>
-            </HorizontalStackLayout>
+             x:DataType="viewModels:ExploreViewModel"
+             Background="#081425">
 
-            <toolkit:Expander IsExpanded="{Binding IsAdvancedSearch}">
-                <toolkit:Expander.Behaviors>
-                    <comps:ExpanderAnimationBehavior Duration="200"/>
-                </toolkit:Expander.Behaviors>
-                <Border>
-                    <RoundRectangle BackgroundColor="Red" HeightRequest="500" />
-                </Border>
-            </toolkit:Expander>
+    <Border Stroke="#44474C" StrokeThickness="1" Margin="-2,0,-2,0"> <!-- trick for making stroke on top and bottom -->
 
-            <Label FontSize="30" Text="this should move" />
-        </StackLayout>
-    </Grid>
+        <Grid RowDefinitions="Auto,*" Padding="24,32,24,0">
+            <StackLayout >
+                <HorizontalStackLayout>
+                    <SearchBar x:Name="MySearchBar" Placeholder="Search..."/>
+                    <Button Text="something"/>
+                    <Button Text="Open" Command="{Binding ToggleAdvancedCommand}"/>
+                </HorizontalStackLayout>
+
+                <toolkit:Expander IsExpanded="{Binding IsAdvancedSearch}">
+                    <toolkit:Expander.Behaviors>
+                        <comps:ExpanderAnimationBehavior Duration="200"/>
+                    </toolkit:Expander.Behaviors>
+                    <Border>
+                        <RoundRectangle BackgroundColor="Red" HeightRequest="500" />
+                    </Border>
+                </toolkit:Expander>
+
+                <Label FontSize="30" Text="this should move" />
+                <comps:ButtonView ButtonText="EXECUTE SEARCH" ButtonImage="settings_icon.png" HeightRequest="50" >
+                    <comps:ButtonView.Resources>
+                        <ResourceDictionary Source="/Resources/Styles/Buttons/PrimaryButtonStyle.xaml" />
+                    </comps:ButtonView.Resources>
+                </comps:ButtonView>
+            </StackLayout>
+        </Grid>
+    </Border>
 </ContentPage>

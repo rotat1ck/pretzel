@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    
+    <Style TargetType="Border">
+        <Setter Property="Background" Value="#94A3B8" />
+        <Setter Property="Stroke" Value="Transparent" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 4" />
+    </Style>
+
+    <Style TargetType="Grid">
+        <Setter Property="ColumnDefinitions" Value="Auto,Auto" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="ColumnSpacing" Value="4" />
+        <Setter Property="Padding" Value="12,0,12,0" />
+    </Style>
+
+    <Style TargetType="Image">
+        <Setter Property="Aspect" Value="AspectFit" />
+        <Setter Property="HeightRequest" Value="16" />
+        <Setter Property="WidthRequest" Value="16" />
+    </Style>
+
+    <Style TargetType="Label">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontFamily" Value="Lexend" />
+        <Setter Property="TextColor" Value="#2B394B" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="VerticalOptions" Value="Center" />
+    </Style>
+</ResourceDictionary>
