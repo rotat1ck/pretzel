@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Pretzel.App.Components.ButtonView"
+             x:Class="Pretzel.App.Components.Buttons.ButtonView"
              Background="Transparent"
              x:Name="root">
+
+    <ContentView.Resources>
+        <ResourceDictionary Source="/Resources/Styles/Buttons/BaseButtonStyle.xaml" />
+    </ContentView.Resources>
    
     <ContentView.GestureRecognizers>
         <TapGestureRecognizer Command="{Binding Source={x:Reference root}, Path=ButtonCommand}" 
                               CommandParameter="{Binding Source={x:Reference root}, Path=ButtonCommandParameter}" />
+        <PointerGestureRecognizer PointerEntered="OnPointerEntered"
+                                  PointerExited="OnPointerExited" />
     </ContentView.GestureRecognizers>
 
-    <Border>
-        <Grid>
-            <Image Source="{Binding Source={x:Reference root}, Path=ButtonImage}">
+    <Border Style="{DynamicResource buttonBorderStyle}" x:Name="border">
+        <Grid Style="{DynamicResource buttonGridStyle}">
+            <Image Source="{Binding Source={x:Reference root}, Path=ButtonImage}"
+                   Style="{DynamicResource buttonImageStyle}">
                 <Image.Triggers>
                     <Trigger TargetType="Image" Property="Source" Value="{x:Null}">
                         <Setter Property="IsVisible" Value="False"/>
@@ -21,7 +28,8 @@
             </Image>
 
             <Label Grid.Column="1" 
-                   Text="{Binding Source={x:Reference root}, Path=ButtonText}"/>   
+                   Text="{Binding Source={x:Reference root}, Path=ButtonText}"
+                   Style="{DynamicResource buttonLabelStyle}"/>   
         </Grid>
     </Border>
 </ContentView>

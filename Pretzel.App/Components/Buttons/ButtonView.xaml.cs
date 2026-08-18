@@ -1,6 +1,6 @@
 using System.Windows.Input;
 
-namespace Pretzel.App.Components;
+namespace Pretzel.App.Components.Buttons;
 
 public partial class ButtonView : ContentView
 {
@@ -43,5 +43,15 @@ public partial class ButtonView : ContentView
     public ButtonView()
     {
         InitializeComponent();
+    }
+
+    private void OnPointerEntered(object sender, PointerEventArgs e)
+    {
+        border.Style = Resources["buttonBorderHoveredStyle"] as Style;
+    }
+
+    private void OnPointerExited(object sender, PointerEventArgs e)
+    {
+        border.Style = Resources["buttonBorderStyle"] as Style;
     }
 }
