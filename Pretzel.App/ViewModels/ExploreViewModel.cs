@@ -45,8 +45,12 @@ public partial class ExploreViewModel(IChartSearchService searchService) : BaseV
 
     // maybe later be combined into a ChartSearchSession,
     // if not needed to bind directly to these properties
-    private List<ChartSearchResults> SourcesResults { get; set; }
+    [ObservableProperty]
+    private List<ChartSearchResults> sourcesResults = new();
 
-    private ChartSearchOptions BasicSearchOptions { get; set; } = new();
-    private ChartSearchAdvancedOptions AdvancedSearchOptions { get; set; }
+    [ObservableProperty]
+    private ChartSearchOptions basicSearchOptions = new();
+
+    [ObservableProperty]
+    private ChartSearchAdvancedOptions advancedSearchOptions = new();
 }
