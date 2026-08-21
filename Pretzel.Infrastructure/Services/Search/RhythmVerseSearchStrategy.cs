@@ -68,7 +68,7 @@ public class RhythmVerseSearchStrategy(IHttpClientFactory clientFactory, IMapper
         {
             string convertedKey = namingPolicy.ConvertName(prop.Name);
             string? value = prop.GetValue(searchRequest)?.ToString();
-            if (value is not null)
+            if (value is not null && !string.IsNullOrEmpty(value))
             {
                 payload.Add(convertedKey, value);
             }

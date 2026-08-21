@@ -4,5 +4,5 @@ namespace Pretzel.Core.Interfaces;
 
 public interface IChartSearchService
 {
-    IAsyncEnumerable<ChartSearchResults> SearchAsync(ChartSearchOptions searchOptions, CancellationTokenSource cts);
+    IAsyncEnumerable<ChartSearchResults> SearchAsync(ChartSearchOptions searchOptions, CancellationToken cancellationToken = default);
 }

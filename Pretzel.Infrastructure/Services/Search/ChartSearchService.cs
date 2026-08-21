@@ -15,7 +15,7 @@ public class ChartSearchService : IChartSearchService
         this.serviceProvider = serviceProvider;
     }
 
-    public async IAsyncEnumerable<ChartSearchResults> SearchAsync(ChartSearchOptions searchOptions, CancellationTokenSource cts)
+    public async IAsyncEnumerable<ChartSearchResults> SearchAsync(ChartSearchOptions searchOptions, CancellationToken cancellationToken = default)
     {
         var settings = searchSettingProvider.GetValue();
 
@@ -30,7 +30,6 @@ public class ChartSearchService : IChartSearchService
             yield break;
         }
 
-        var cancellationToken = cts?.Token ?? CancellationToken.None;
         var taskDict = strategies.ToDictionary(
             strategy => strategy.SearchAsync(searchOptions, cancellationToken),
             strategy => strategy

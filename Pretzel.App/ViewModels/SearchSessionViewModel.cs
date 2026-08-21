@@ -5,17 +5,13 @@ namespace Pretzel.App.ViewModels;
 
 public partial class SearchSessionViewModel : BaseViewModel
 {
-    [ObservableProperty]
-    public partial List<ChartSearchResults>? SourcesResults { get; set; }
-
-
     public ChartSearchOptions BasicSearchOptions { get; set; } = new();
 
     [ObservableProperty]
     public partial string? Search { get; set; }
 
 
-    private ChartSearchAdvancedOptions AdvancedSearchOptions { get; set; } = new();
+    public ChartSearchAdvancedOptions AdvancedSearchOptions { get; set; } = new();
 
     [ObservableProperty]
     public partial string? Name { get; set; }
@@ -34,4 +30,18 @@ public partial class SearchSessionViewModel : BaseViewModel
 
     [ObservableProperty]
     public partial int? Year { get; set; }
+
+    public void ComposeSearchOptions()
+    {
+        BasicSearchOptions.Page = 1;
+        BasicSearchOptions.Search = Search;
+
+        AdvancedSearchOptions.Page = 1;
+        AdvancedSearchOptions.Name = Name;
+        AdvancedSearchOptions.Artist = Artist;
+        AdvancedSearchOptions.Charter = Charter;
+        AdvancedSearchOptions.Album = Album;
+        AdvancedSearchOptions.Genre = Genre;
+        AdvancedSearchOptions.Year = Year;
+    }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Pretzel.Core.Models.Search;
 
-public class ChartSearchAdvancedOptions : ChartSearchOptions
+public record ChartSearchAdvancedOptions : ChartSearchOptions
 {
     public string? Name { get; set; }
     public string? Album { get; set; }

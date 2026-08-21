@@ -1,6 +1,6 @@
 ﻿namespace Pretzel.Core.Models.Search;
 
-public class ChartSearchOptions
+public record ChartSearchOptions
 {
     public int Page { get; set; } = 1;
     public int Records { get; set; } = DefaultPageSize;
