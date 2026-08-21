@@ -2,7 +2,7 @@
 
 public class ChartSearchOptions
 {
-    public int Page { get; set; }
+    public int Page { get; set; } = 1;
     public int Records { get; set; } = DefaultPageSize;
 
     public string? Search { get; set; }

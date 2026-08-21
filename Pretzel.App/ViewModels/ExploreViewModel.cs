@@ -2,13 +2,15 @@
 using CommunityToolkit.Mvvm.Input;
 using Pretzel.Core.Interfaces;
 using Pretzel.Core.Models;
-using Pretzel.Core.Models.Search;
 
 namespace Pretzel.App.ViewModels;
 
-public partial class ExploreViewModel(IChartSearchService searchService) : BaseViewModel
+public partial class ExploreViewModel(IChartSearchService searchService, SearchSessionViewModel searchSession) : BaseViewModel
 {
     private readonly IChartSearchService searchService = searchService;
+
+    [ObservableProperty]
+    private SearchSessionViewModel searchSession = searchSession;
 
     [RelayCommand]
     public void ToggleAdvanced()
@@ -19,38 +21,32 @@ public partial class ExploreViewModel(IChartSearchService searchService) : BaseV
     [RelayCommand]
     public async Task Search()
     {
-        BasicSearchOptions.Page = 1;
-        BasicSearchOptions.Search = "123kfdgjgfdk123";
+        cts.Dispose();
+        cts = new();
 
-        await foreach (var platformResult in searchService.SearchAsync(BasicSearchOptions, null))
-        {
-
-        }
     }
 
-    [ObservableProperty]
-    private List<Chart> displayCharts = new();
+    [RelayCommand]
+    public void Cancel()
+    {
+        cts.Cancel();
+    }
+
+    private CancellationTokenSource cts = new();
 
     [ObservableProperty]
-    private int? count;
+    public partial List<Chart> DisplayCharts { get; set; } = new();
 
     [ObservableProperty]
-    private int? returned;
+    public partial int? Count { get; set; }
 
     [ObservableProperty]
-    private bool isAdvancedSearch = false;
+    public partial int? Returned { get; set; }
 
     [ObservableProperty]
-    private bool isSearching = false;
-
-    // maybe later be combined into a ChartSearchSession,
-    // if not needed to bind directly to these properties
-    [ObservableProperty]
-    private List<ChartSearchResults> sourcesResults = new();
+    public partial bool IsAdvancedSearch { get; set; } = false;
 
     [ObservableProperty]
-    private ChartSearchOptions basicSearchOptions = new();
+    public partial bool IsSearching { get; set; } = false;
 
-    [ObservableProperty]
-    private ChartSearchAdvancedOptions advancedSearchOptions = new();
 }

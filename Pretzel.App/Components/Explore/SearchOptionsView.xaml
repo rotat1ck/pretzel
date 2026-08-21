@@ -2,23 +2,31 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:local="clr-namespace:Pretzel.App.Components.Explore"
              xmlns:comps="clr-namespace:Pretzel.App.Components"
              xmlns:buttons="clr-namespace:Pretzel.App.Components.Buttons"
              xmlns:viewModels="clr-namespace:Pretzel.App.ViewModels"
              x:Class="Pretzel.App.Components.Explore.SearchOptionsView"
              x:DataType="viewModels:ExploreViewModel">
-    <StackLayout>
+    
+    <StackLayout Spacing="24">
+        <!-- basic search section-->
         <Grid ColumnDefinitions="*,2*">
-            
             <Border Stroke="{StaticResource PrimaryStroke}"
                     StrokeShape="RoundRectangle 4"
                     StrokeThickness="1">
-                
-                <SearchBar Text="{Binding BasicSearchOptions.Search}"
+
+                <SearchBar Text="{Binding SearchSession.Search}"
                            FontFamily="Lexend"
                            TextColor="{StaticResource PrimaryLightText}"
                            BackgroundColor="{StaticResource PrimaryDark}"
-                           SearchIconColor="{StaticResource PrimaryLightText}"/>
+                           SearchIconColor="{StaticResource PrimaryLightText}">
+                    <SearchBar.Triggers>
+                        <DataTrigger TargetType="{x:Type SearchBar}" Binding="{Binding IsAdvancedSearch}" Value="True">
+                            <Setter Property="IsEnabled" Value="False" />
+                        </DataTrigger>
+                    </SearchBar.Triggers>
+                </SearchBar>
             </Border>
             
             <Grid Grid.Column="1"
@@ -31,12 +39,53 @@
                                              IsEnabled="False"/>
                 <buttons:TransparentButtonView Grid.Column="2"
                                                ButtonText="ADVANCED SEARCH" 
+                                               ButtonCommand="{Binding ToggleAdvancedCommand}"
                                                HorizontalOptions="End"/>
             </Grid>
         </Grid>
-
+        
+        <!-- advanced search section -->
         <toolkit:Expander IsExpanded="{Binding IsAdvancedSearch}">
-            
+            <Border StrokeThickness="0">
+                <Grid ColumnDefinitions="Auto,Auto" 
+                      HorizontalOptions="Center"
+                      ColumnSpacing="40">
+
+                    <VerticalStackLayout WidthRequest="300" 
+                                         Spacing="8">
+
+                        <local:SearchOptionsInputView PlaceholderText="Name" 
+                                                      Input="{Binding SearchSession.Name}"/>
+                        <local:SearchOptionsInputView PlaceholderText="Artist" 
+                                                      Input="{Binding SearchSession.Artist}"/>
+                        <local:SearchOptionsInputView PlaceholderText="Charter" 
+                                                      Input="{Binding SearchSession.Charter}"/>
+                        <local:SearchOptionsInputView PlaceholderText="Album" 
+                                                      Input="{Binding SearchSession.Album}"/>
+                        <local:SearchOptionsInputView PlaceholderText="Genre" 
+                                                      Input="{Binding SearchSession.Genre}"/>
+                    </VerticalStackLayout>
+                    
+                    <Grid Grid.Column="1"
+                          WidthRequest="300"
+                          RowDefinitions="Auto,*">
+
+                        <local:SearchOptionsInputView PlaceholderText="Year" 
+                                                      Input="{Binding SearchSession.Year}"/>
+                        
+                        <buttons:PrimaryButtonView Grid.Row="1" 
+                                                   ButtonText="Search"
+                                                   ButtonCommand="{Binding SearchCommand}"
+                                                   HeightRequest="32"
+                                                   VerticalOptions="End" 
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <toolkit:Expander.Behaviors>
+                <comps:ExpanderAnimationBehavior />
+            </toolkit:Expander.Behaviors>
         </toolkit:Expander>
+        
     </StackLayout>
 </ContentView>

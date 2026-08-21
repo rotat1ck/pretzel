@@ -46,8 +46,11 @@ public static class MauiProgram
                     });
                 });
 #endif
-            })
-            .Services.AddTransient<ExploreViewModel>();
+            });
+
+        builder.Services.AddTransient<ExploreViewModel>();
+        builder.Services.AddTransient<SearchSessionViewModel>();
+
 
         builder.Services.AddInfrastructure();
         builder.Services.RegisterSettingProviders();
