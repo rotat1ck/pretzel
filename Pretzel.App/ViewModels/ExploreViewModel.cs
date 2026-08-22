@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Pretzel.Core.Interfaces;
 using Pretzel.Core.Models;
 using Pretzel.Core.Models.Search;
+using System.Collections.ObjectModel;
 
 namespace Pretzel.App.ViewModels;
 
@@ -68,7 +69,10 @@ public partial class ExploreViewModel(IChartSearchService searchService, SearchS
 
                 Count = CalculateTotalCount();
                 Returned += sourceResult.Items.Count();
-                DisplayCharts.AddRange(sourceResult.Items);
+                foreach (var chart in sourceResult.Items)
+                {
+                    DisplayCharts.Add(chart);
+                }
             }
 
             if (Returned >= Count)
@@ -109,7 +113,7 @@ public partial class ExploreViewModel(IChartSearchService searchService, SearchS
     private List<ChartSearchResults> SourcesResults { get; set; } = new();
 
     [ObservableProperty]
-    public partial List<Chart> DisplayCharts { get; set; } = new();
+    public partial ObservableCollection<Chart> DisplayCharts { get; set; } = new();
 
     [ObservableProperty]
     public partial int? Count { get; set; }

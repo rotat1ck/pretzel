@@ -14,8 +14,10 @@
             Margin="-2,0,-2,0"> <!-- trick for making stroke on top and bottom -->
 
         <Grid RowDefinitions="Auto,*" 
-              Padding="24,32,24,0">
+              Padding="24,32,24,0"
+              RowSpacing="16">
             <exploreComps:SearchOptionsView />
+            <exploreComps:SearchResultsView Grid.Row="1"/>
             <!--<StackLayout >
                 <HorizontalStackLayout>
                     <SearchBar x:Name="MySearchBar" Placeholder="Search..."/>

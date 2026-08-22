@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:Pretzel.App.ViewModels"
+             xmlns:models="clr-namespace:Pretzel.Core.Models;assembly=Pretzel.Core"
+             x:Class="Pretzel.App.Components.Explore.SearchResultsView"
+             x:DataType="viewModels:ExploreViewModel">
+    
+    <StackLayout Spacing="16">
+        <!-- search section separator -->
+        <Grid ColumnDefinitions="Auto,Auto,*"
+              RowDefinitions="Auto,Auto"
+              ColumnSpacing="16"
+              RowSpacing="5">
+
+            <Label TextColor="{StaticResource PrimaryLightText}"
+                   Text="Search Results"
+                   FontFamily="Lexend"
+                   FontSize="18" />
+
+            <Border Grid.Column="1"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 12"
+                    Padding="12,0,12,0"
+                    Background="{StaticResource SecondaryDarkButton}">
+
+                <Label FontFamily="Lexend"
+                       TextColor="{StaticResource SecondaryLightText}"
+                       FontSize="11"
+                       VerticalTextAlignment="Center"
+                       Text="{Binding Count, StringFormat='{0} charts found'}"/>
+            </Border> 
+            
+            <!-- separator line, same as in MainWindow -->
+            <RoundRectangle Grid.Row="1"
+                            Grid.ColumnSpan="3"
+                            HeightRequest="1"
+                            StrokeThickness="0"
+                            Background="{StaticResource PrimaryStroke}" />
+        </Grid>
+
+        <ScrollView >
+            <CollectionView ItemsSource="{Binding DisplayCharts}">
+                
+                <CollectionView.EmptyViewTemplate>
+                    <DataTemplate>
+                        <Label Text="No charts to show" />
+                    </DataTemplate>
+                </CollectionView.EmptyViewTemplate>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Chart">
+                        <HorizontalStackLayout>
+                            <Label Text="{Binding DownloadSources[0].Source, StringFormat='Source: {0}'}" />
+                            <Label Text="{Binding Name, StringFormat=' | Name: {0}'}" />
+                            <Label Text="{Binding Artist, StringFormat=' | Artist: {0}'}" />
+                            <Label Text="{Binding Charter, StringFormat=' | Charter: {0}'}" />
+                        </HorizontalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView> 
+        </ScrollView>
+    </StackLayout>
+</ContentView>

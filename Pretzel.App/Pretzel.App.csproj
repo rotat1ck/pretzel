@@ -75,11 +75,4 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\Pretzel.Infrastructure\Pretzel.Infrastructure.csproj" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <MauiXaml Update="Components\Explore\SearchOptionsInputView.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	</ItemGroup>
-	
 </Project>

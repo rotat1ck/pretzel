@@ -68,7 +68,7 @@
                     
                     <Grid Grid.Column="1"
                           WidthRequest="300"
-                          RowDefinitions="Auto,*,*">
+                          RowDefinitions="Auto,*">
 
                         <local:SearchOptionsInputView PlaceholderText="Year" 
                                                       Input="{Binding SearchSession.Year}"/>
@@ -78,11 +78,6 @@
                                                    ButtonCommand="{Binding SearchCommand}"
                                                    HeightRequest="32"
                                                    VerticalOptions="End" />
-                        <buttons:PrimaryButtonView Grid.Row="2" 
-                           ButtonText="next"
-                           ButtonCommand="{Binding SearchNewPageCommand}"
-                           HeightRequest="32"
-                           VerticalOptions="End" />
                     </Grid>
                 </Grid>
             </Border>
