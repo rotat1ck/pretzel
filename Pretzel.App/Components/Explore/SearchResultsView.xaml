@@ -51,7 +51,8 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:Chart">
                         <HorizontalStackLayout>
-                            <Label Text="{Binding DownloadSources[0].Source, StringFormat='Source: {0}'}" />
+                            <Label Text="{Binding DownloadSources[0].Source, StringFormat='Source: {0}'}"
+                                   TextColor="{StaticResource PrimaryLightText}"/>
                             <Label Text="{Binding Name, StringFormat=' | Name: {0}'}" />
                             <Label Text="{Binding Artist, StringFormat=' | Artist: {0}'}" />
                             <Label Text="{Binding Charter, StringFormat=' | Charter: {0}'}" />

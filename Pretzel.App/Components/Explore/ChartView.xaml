@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:Pretzel.Core.Models;assembly=Pretzel.Core"
+             x:Class="Pretzel.App.Components.Explore.ChartView"
+             x:DataType="models:Chart">
+
+    <Border Padding="16"
+            Stroke="{StaticResource PrimaryStroke}"
+            StrokeThickness="1">
+
+        <Grid ColumnDefinitions="2*,*,2*">
+            
+            <!-- song info -->
+            <Grid ColumnDefinitions="Auto,Auto,*">
+                <Border StrokeThickness="0"
+                        StrokeShape="RoundRectangle 8">
+
+                    <Image Source="{Binding DownloadSources[0].AlbumArtUri}">
+                        
+                    </Image>
+                </Border>
+                
+                <
+            </Grid>
+        </Grid>
+    </Border>
+    
+</ContentView>

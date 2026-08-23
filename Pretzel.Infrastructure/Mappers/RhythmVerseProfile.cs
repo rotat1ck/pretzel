@@ -22,8 +22,8 @@ public class RhythmVerseProfile : Profile
                 dest.DownloadSources.Add(new ChartDownloadSource
                 {
                     Source = ChartSource.RhythmVerse,
-                    ChartUri = src.File.ChartUri,
-                    AlbumArtUri = src.File.AlbumArtUri
+                    ChartUri = new Uri(ChartSource.RhythmVerse.ResolveBaseUri(), src.File.ChartUri),
+                    AlbumArtUri = new Uri(ChartSource.RhythmVerse.ResolveBaseUri(), src.File.AlbumArtUri)
                 });
             });
 

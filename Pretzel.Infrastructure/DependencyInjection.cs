@@ -13,13 +13,13 @@ public static class DependencyInjection
 
         services.AddHttpClient(ChartSource.ChorusEncore.ToString(), client =>
         {
-            client.BaseAddress = new Uri("https://api.enchor.us");
+            client.BaseAddress = ChartSource.ChorusEncore.ResolveBaseUri();
             client.Timeout = TimeSpan.FromSeconds(5);
         });
 
         services.AddHttpClient(ChartSource.RhythmVerse.ToString(), client =>
         {
-            client.BaseAddress = new Uri("https://rhythmverse.co");
+            client.BaseAddress = ChartSource.RhythmVerse.ResolveBaseUri();
             client.Timeout = TimeSpan.FromSeconds(5);
         });
 

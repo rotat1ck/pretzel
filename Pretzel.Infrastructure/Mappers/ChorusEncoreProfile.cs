@@ -16,8 +16,8 @@ public class ChorusEncoreProfile : Profile
                 dest.DownloadSources.Add(new ChartDownloadSource
                 {
                     Source = ChartSource.ChorusEncore,
-                    ChartUri = src.ChartUri,
-                    AlbumArtUri = src.AlbumArtUri
+                    ChartUri = new Uri(ChartSource.ChorusEncore.ResolveBaseUri(), src.ChartUri),
+                    AlbumArtUri = new Uri(ChartSource.ChorusEncore.ResolveBaseUri(), src.AlbumArtUri)
                 });
             });
 

@@ -6,6 +6,6 @@ public class ChartDownloadSource
 {
     public ChartSource Source { get; set; }
     public ChartSourceExtensionData? ExtensionData { get; set; }
-    public required string ChartUri { get; set; }
-    public string? AlbumArtUri { get; set; }
+    public required Uri ChartUri { get; set; }
+    public Uri? AlbumArtUri { get; set; }
 }
