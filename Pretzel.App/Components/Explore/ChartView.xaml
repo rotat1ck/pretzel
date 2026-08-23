@@ -12,16 +12,86 @@
         <Grid ColumnDefinitions="2*,*,2*">
             
             <!-- song info -->
-            <Grid ColumnDefinitions="Auto,Auto,*">
+            <Grid ColumnDefinitions="Auto,2*,*"
+                  ColumnSpacing="10">
+                <!-- song image -->
                 <Border StrokeThickness="0"
                         StrokeShape="RoundRectangle 8">
 
-                    <Image Source="{Binding DownloadSources[0].AlbumArtUri}">
-                        
+                    <Image HeightRequest="100"
+                           Aspect="AspectFill">
+                        <Image.Source>
+                            <UriImageSource Uri="{Binding DownloadSources[0].AlbumArtUri,
+                                                  FallbackValue='album_art_placeholder.png',
+                                                  TargetNullValue='album_art_placeholder.png'}"
+                                            CachingEnabled="True"
+                                            CacheValidity="4:00:00"/>
+                        </Image.Source>
                     </Image>
                 </Border>
-                
-                <
+
+                <!-- song name, artist, album -->
+                <VerticalStackLayout Grid.Column="1">
+                    <Label Text="{Binding Name}"
+                           TextColor="{StaticResource PrimaryLightText}"
+                           LineBreakMode="WordWrap"
+                           FontSize="22" 
+                           FontAttributes="Bold" />
+                    <Label Text="{Binding Artist}"
+                           TextColor="{StaticResource PrimaryLightText}"
+                           LineBreakMode="WordWrap"
+                           FontSize="14" />
+                    <Label Text="{Binding Album}"
+                           TextColor="{StaticResource SecondaryLightText}"
+                           LineBreakMode="WordWrap"
+                           FontSize="14" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="2"
+                                     HorizontalOptions="End">
+                    
+                    <Label Text="{Binding Genre}"
+                           TextColor="{StaticResource SecondaryLightText}"
+                           FontSize="12">
+                        
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" 
+                                         Binding="{Binding Genre}"
+                                         Value="{x:Null}">
+
+                                <Setter Property="IsVisible" Value="False" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+
+                    <Label Text="{Binding Year, StringFormat='Year: {0}'}"
+                           TextColor="{StaticResource SecondaryLightText}"
+                           FontSize="12">
+                        
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" 
+                                         Binding="{Binding Year}"
+                                         Value="{x:Null}">
+
+                                <Setter Property="IsVisible" Value="False" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+
+                    <Label Text="{Binding Charter, StringFormat='charted by: {0}'}"
+                           TextColor="{StaticResource PrimaryLightText}"
+                           FontSize="12">
+
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" 
+                                         Binding="{Binding Charter}"
+                                         Value="{x:Null}">
+
+                                <Setter Property="IsVisible" Value="False" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </VerticalStackLayout>
             </Grid>
         </Grid>
     </Border>
