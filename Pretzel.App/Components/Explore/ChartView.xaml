@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Pretzel.App.Components.Explore"
              xmlns:models="clr-namespace:Pretzel.Core.Models;assembly=Pretzel.Core"
              x:Class="Pretzel.App.Components.Explore.ChartView"
              x:DataType="models:Chart">
 
     <Border Padding="16"
             Stroke="{StaticResource PrimaryStroke}"
+            Background="{StaticResource PrimaryDark}"
             StrokeThickness="1">
 
-        <Grid ColumnDefinitions="2*,*,2*">
+        <Grid ColumnDefinitions="2*,*,2*,*,*"
+              ColumnSpacing="5">
             
             <!-- song info -->
-            <Grid ColumnDefinitions="Auto,2*,*"
+            <Grid ColumnDefinitions="Auto,*"
                   ColumnSpacing="10">
                 <!-- song image -->
                 <Border StrokeThickness="0"
                         StrokeShape="RoundRectangle 8">
 
-                    <Image HeightRequest="100"
+                    <Image HeightRequest="96"
                            Aspect="AspectFill">
                         <Image.Source>
                             <UriImageSource Uri="{Binding DownloadSources[0].AlbumArtUri,
@@ -46,53 +49,75 @@
                            LineBreakMode="WordWrap"
                            FontSize="14" />
                 </VerticalStackLayout>
-
-                <VerticalStackLayout Grid.Column="2"
-                                     HorizontalOptions="End">
-                    
-                    <Label Text="{Binding Genre}"
-                           TextColor="{StaticResource SecondaryLightText}"
-                           FontSize="12">
-                        
-                        <Label.Triggers>
-                            <DataTrigger TargetType="Label" 
-                                         Binding="{Binding Genre}"
-                                         Value="{x:Null}">
-
-                                <Setter Property="IsVisible" Value="False" />
-                            </DataTrigger>
-                        </Label.Triggers>
-                    </Label>
-
-                    <Label Text="{Binding Year, StringFormat='Year: {0}'}"
-                           TextColor="{StaticResource SecondaryLightText}"
-                           FontSize="12">
-                        
-                        <Label.Triggers>
-                            <DataTrigger TargetType="Label" 
-                                         Binding="{Binding Year}"
-                                         Value="{x:Null}">
-
-                                <Setter Property="IsVisible" Value="False" />
-                            </DataTrigger>
-                        </Label.Triggers>
-                    </Label>
-
-                    <Label Text="{Binding Charter, StringFormat='charted by: {0}'}"
-                           TextColor="{StaticResource PrimaryLightText}"
-                           FontSize="12">
-
-                        <Label.Triggers>
-                            <DataTrigger TargetType="Label" 
-                                         Binding="{Binding Charter}"
-                                         Value="{x:Null}">
-
-                                <Setter Property="IsVisible" Value="False" />
-                            </DataTrigger>
-                        </Label.Triggers>
-                    </Label>
-                </VerticalStackLayout>
             </Grid>
+            
+            <!-- genre, year, charter -->
+            <VerticalStackLayout Grid.Column="1"
+                     HorizontalOptions="End">
+
+                <Label HorizontalOptions="End"
+                       Text="{Binding Genre}"
+                       TextColor="{StaticResource SecondaryLightText}"
+                       FontSize="12">
+
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label" 
+                                     Binding="{Binding Genre}"
+                                     Value="{x:Null}">
+
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+
+                <Label HorizontalOptions="End"
+                       Text="{Binding Year, StringFormat='Year: {0}'}"
+                       TextColor="{StaticResource SecondaryLightText}"
+                       FontSize="12">
+
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label" 
+                         Binding="{Binding Year}"
+                         Value="{x:Null}">
+
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+
+                <Label HorizontalOptions="End"
+                       Text="{Binding Charter, StringFormat='charted by: {0}'}"
+                       TextColor="{StaticResource PrimaryLightText}"
+                       FontSize="12">
+
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label" 
+                                     Binding="{Binding Charter}"
+                                     Value="{x:Null}">
+
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+            </VerticalStackLayout>
+
+            <!-- instruments info -->
+            <FlexLayout Grid.Column="2" 
+                        Direction="Row"
+                        JustifyContent="Start"
+                        Wrap="Wrap"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                        BindableLayout.ItemsSource="{Binding Instruments}">
+
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="models:ChartInstrument">
+                        <local:ChartInstrumentView BindingContext="{Binding}" />
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+                
+
+            </FlexLayout>
         </Grid>
     </Border>
     
