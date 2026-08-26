@@ -9,22 +9,27 @@
             StrokeShape="RoundRectangle 6"
             Padding="5,2,5,5"
             Stroke="{StaticResource PrimaryDark}"
-            Background="{StaticResource SecondaryDarkButton}">
+            Background="{StaticResource SecondaryDarkButton}"
+            ToolTipProperties.Text="{Binding Instrument}">
 
         <Grid RowDefinitions="Auto,Auto">
 
+            <!-- available difficulties -->
             <Label x:Name="difficulties"
                    Text="Expert"
                    TextColor="{StaticResource PrimaryLightText}"
                    FontSize="16"
                    HorizontalTextAlignment="Center"/>
 
-            <Image Grid.Row="1"
+            <!-- instrument image -->
+            <Image x:Name="instrumentImage" 
+                   Grid.Row="1"
                    VerticalOptions="Start"
                    HeightRequest="56"
                    WidthRequest="56"
-                   Source="instrument_guitar.png" />
+                   Loaded="InstrumentImage_Loaded" />
 
+            <!-- chorus encore style instrument rating -->
             <Border Grid.Row="1"
                     VerticalOptions="End"
                     HorizontalOptions="Start"
