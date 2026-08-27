@@ -2,9 +2,9 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Pretzel.App.Components.Explore"
-             xmlns:models="clr-namespace:Pretzel.Core.Models;assembly=Pretzel.Core"
+             xmlns:chartModels="clr-namespace:Pretzel.Core.Models.Chart;assembly=Pretzel.Core"
              x:Class="Pretzel.App.Components.Explore.ChartView"
-             x:DataType="models:Chart">
+             x:DataType="chartModels:Chart">
 
     <Border Padding="16"
             Stroke="{StaticResource PrimaryStroke}"
@@ -111,7 +111,7 @@
                         BindableLayout.ItemsSource="{Binding Instruments}">
 
                 <BindableLayout.ItemTemplate>
-                    <DataTemplate x:DataType="models:ChartInstrument">
+                    <DataTemplate x:DataType="chartModels:ChartInstrument">
                         <local:ChartInstrumentView BindingContext="{Binding}" />
                     </DataTemplate>
                 </BindableLayout.ItemTemplate>
