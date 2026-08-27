@@ -1,4 +1,4 @@
-using Pretzel.Core.Models;
+using Pretzel.Core.Models.Chart;
 
 namespace Pretzel.App.Components.Explore;
 

@@ -1,6 +1,7 @@
 ﻿using Pretzel.Core.Enums;
+using Pretzel.Core.Models.Chart.SourceExtensions;
 
-namespace Pretzel.Core.Models;
+namespace Pretzel.Core.Models.Chart;
 
 public class ChartDownloadSource
 {

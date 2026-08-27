@@ -1,4 +1,4 @@
-﻿using Pretzel.Core.Models;
+﻿using Pretzel.Core.Models.Chart;
 using Pretzel.Infrastructure.Converters;
 using System.Text.Json;
 using System.Text.Json.Nodes;

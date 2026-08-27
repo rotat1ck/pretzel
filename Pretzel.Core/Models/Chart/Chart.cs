@@ -1,4 +1,4 @@
-﻿namespace Pretzel.Core.Models;
+﻿namespace Pretzel.Core.Models.Chart;
 
 public class Chart
 {

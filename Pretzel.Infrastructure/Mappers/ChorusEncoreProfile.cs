@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Pretzel.Core.Enums;
 using Pretzel.Core.Models;
+using Pretzel.Core.Models.Chart;
 using Pretzel.Core.Models.Search;
 using Pretzel.Infrastructure.DTOs.Search.ChorusEncore;
 

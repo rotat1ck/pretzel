@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Pretzel.Core.Interfaces;
-using Pretzel.Core.Models;
+using Pretzel.Core.Models.Chart;
 using Pretzel.Core.Models.Search;
 using System.Collections.ObjectModel;
 

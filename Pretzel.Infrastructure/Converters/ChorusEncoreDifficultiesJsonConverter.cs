@@ -1,5 +1,5 @@
 ﻿using Pretzel.Core.Enums;
-using Pretzel.Core.Models;
+using Pretzel.Core.Models.Chart;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
