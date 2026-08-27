@@ -67,7 +67,10 @@ public class RhythmVerseChartResponse : IJsonOnDeserialized
 
         [JsonPropertyName("difficulties")]
         [JsonConverter(typeof(RhythmVerseDifficultiesJsonConverter))]
-        public required IEnumerable<ChartInstrument> Difficulties { get; set; }
+        public IEnumerable<ChartInstrument> Difficulties { get; set; }
+
+        [JsonPropertyName("external_url")]
+        public string? ExternalUrl { get; set; }
 
         [JsonExtensionData]
         public JsonObject? ExtensionData { get; set; }

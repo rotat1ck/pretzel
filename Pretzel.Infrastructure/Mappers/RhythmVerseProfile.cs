@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Pretzel.Core.Enums;
 using Pretzel.Core.Models.Chart;
+using Pretzel.Core.Models.Chart.SourceExtensions;
 using Pretzel.Core.Models.Search;
 using Pretzel.Infrastructure.DTOs.Search.RhythmVerse;
 
@@ -23,7 +24,11 @@ public class RhythmVerseProfile : Profile
                 {
                     Source = ChartSource.RhythmVerse,
                     ChartUri = new Uri(ChartSource.RhythmVerse.ResolveBaseUri(), src.File.ChartUri),
-                    AlbumArtUri = new Uri(ChartSource.RhythmVerse.ResolveBaseUri(), src.File.AlbumArtUri)
+                    AlbumArtUri = new Uri(ChartSource.RhythmVerse.ResolveBaseUri(), src.File.AlbumArtUri),
+                    ExtensionData = new RhythmVerseChartSourceExtensionData
+                    {
+                        IsExternal = !string.IsNullOrEmpty(src.File.ExternalUrl)
+                    }
                 });
             });
 
