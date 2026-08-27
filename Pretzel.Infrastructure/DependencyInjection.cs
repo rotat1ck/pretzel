@@ -13,7 +13,7 @@ public static class DependencyInjection
 
         services.AddHttpClient(ChartSource.ChorusEncore.ToString(), client =>
         {
-            client.BaseAddress = ChartSource.ChorusEncore.ResolveBaseUri();
+            client.BaseAddress = ChartSource.ChorusEncore.ResolveBaseUri().WithSubdomain("api");
             client.Timeout = TimeSpan.FromSeconds(5);
         });
 

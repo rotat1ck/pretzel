@@ -10,7 +10,7 @@ public static class ChartSourceResolver
 {
     private static Dictionary<ChartSource, string> sourceUriMap = new()
     {
-        [ChartSource.ChorusEncore] = "https://api.enchor.us",
+        [ChartSource.ChorusEncore] = "https://enchor.us",
         [ChartSource.RhythmVerse] = "https://rhythmverse.co",
     };
 
@@ -22,5 +22,14 @@ public static class ChartSourceResolver
         }
 
         return new Uri(uri);
+    }
+
+    public static Uri WithSubdomain(this Uri baseUri, string subdomain)
+    {
+        var builder = new UriBuilder(baseUri)
+        {
+            Host = subdomain + "." + baseUri.Host
+        };
+        return builder.Uri;
     }
 }

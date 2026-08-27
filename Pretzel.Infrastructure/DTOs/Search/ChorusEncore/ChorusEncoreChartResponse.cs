@@ -62,6 +62,8 @@ public class ChorusEncoreChartResponse : IJsonOnDeserialized
                 instrument.AvailableDifficulties = difficulties;
             }
         }
+
+        Instruments = Instruments.Where(ci => ci.AvailableDifficulties?.Count > 0);
     }
 
     public class NotesData
