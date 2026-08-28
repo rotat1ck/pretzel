@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:Pretzel.App.Components.Explore"
              xmlns:chartModels="clr-namespace:Pretzel.Core.Models.Chart;assembly=Pretzel.Core"
              x:Class="Pretzel.App.Components.Explore.ChartView"
+             x:Name="root"
              x:DataType="chartModels:Chart">
 
     <Border Padding="16"
@@ -115,9 +116,14 @@
                         <local:ChartInstrumentView BindingContext="{Binding}" />
                     </DataTemplate>
                 </BindableLayout.ItemTemplate>
-                
-
             </FlexLayout>
+
+            <Button Grid.Column="4"
+                Text="Download"
+                    FontSize="20"
+                    TextColor="{StaticResource PrimaryLightText}"
+                    Command="{Binding Source={x:Reference root}, Path=DownloadCommand}"
+                    CommandParameter="{Binding DownloadSources[0]}" />
         </Grid>
     </Border>
     

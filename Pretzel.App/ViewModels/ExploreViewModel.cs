@@ -1,15 +1,19 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Pretzel.Core.Interfaces;
+using Pretzel.Core.Interfaces.Download;
 using Pretzel.Core.Models.Chart;
 using Pretzel.Core.Models.Search;
 using System.Collections.ObjectModel;
 
 namespace Pretzel.App.ViewModels;
 
-public partial class ExploreViewModel(IChartSearchService searchService, SearchSessionViewModel searchSession) : BaseViewModel
+public partial class ExploreViewModel(IChartSearchService searchService,
+                                      IChartDownloadService downloadService,
+                                      SearchSessionViewModel searchSession) : BaseViewModel
 {
     private readonly IChartSearchService searchService = searchService;
+    private readonly IChartDownloadService downloadService = downloadService;
 
     [ObservableProperty]
     private SearchSessionViewModel searchSession = searchSession;
@@ -52,6 +56,39 @@ public partial class ExploreViewModel(IChartSearchService searchService, SearchS
         await SearchAsync(currentOptions);
     }
 
+    [RelayCommand]
+    public async Task DownloadChart(ChartDownloadSource selectedSource)
+    {
+        /*
+         * temporarily as null 
+         * cts for downloads will be managed by service itself
+         * and directed by messages from a "DownloadsView"
+        */
+        await downloadService.DownloadAsync(selectedSource, default);
+
+        var downloadResult = downloadService.Downloads[selectedSource];
+        if (downloadResult is not null && downloadResult.Stream is not null)
+        {
+            var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            var songsFolder = Path.Combine(documents, "Test Songs");
+            if (!Directory.Exists(songsFolder))
+            {
+                Directory.CreateDirectory(songsFolder);
+            }
+
+            using FileStream fs = new FileStream(Path.Combine(songsFolder, downloadResult.FileName!), FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write);
+            await downloadResult.Stream.CopyToAsync(fs);
+        }
+
+        await downloadService.DisposeDownloadUnmanagedResourcesAsync(selectedSource);
+    }
+
+    [RelayCommand]
+    public void Cancel()
+    {
+        cts.Cancel();
+    }
+
     private async Task SearchAsync(ChartSearchOptions options)
     {
         IsSearching = true;
@@ -84,12 +121,6 @@ public partial class ExploreViewModel(IChartSearchService searchService, SearchS
         {
             IsSearching = false;
         }
-    }
-
-    [RelayCommand]
-    public void Cancel()
-    {
-        cts.Cancel();
     }
 
     private void ResetSearch()

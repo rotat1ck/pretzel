@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Pretzel.Core.Enums;
 using Pretzel.Core.Interfaces;
+using Pretzel.Core.Interfaces.Download;
+using Pretzel.Infrastructure.Services.Download;
 using Pretzel.Infrastructure.Services.Search;
 
 namespace Pretzel.Infrastructure;
@@ -17,6 +19,12 @@ public static class DependencyInjection
             client.Timeout = TimeSpan.FromSeconds(5);
         });
 
+        services.AddHttpClient(ChartSource.ChorusEncore.ResolveBaseUri().WithSubdomain("files").ToString(), client =>
+        {
+            client.BaseAddress = ChartSource.ChorusEncore.ResolveBaseUri().WithSubdomain("files");
+            client.Timeout = TimeSpan.FromMinutes(90);
+        });
+
         services.AddHttpClient(ChartSource.RhythmVerse.ToString(), client =>
         {
             client.BaseAddress = ChartSource.RhythmVerse.ResolveBaseUri();
@@ -27,6 +35,10 @@ public static class DependencyInjection
         services.AddKeyedSingleton<IChartSearchStrategy, RhythmVerseSearchStrategy>(ChartSource.RhythmVerse);
 
         services.AddSingleton<IChartSearchService, ChartSearchService>();
+
+        services.AddKeyedSingleton<IChartDownloadStrategy, ChorusEncoreDownloadStrategy>(ChartSource.ChorusEncore);
+
+        services.AddSingleton<IChartDownloadService, ChartDownloadService>();
 
         return services;
     }
