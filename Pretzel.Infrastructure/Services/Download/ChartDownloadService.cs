@@ -12,7 +12,7 @@ public class ChartDownloadService(IServiceProvider serviceProvider) : IChartDown
 
     public ConcurrentDictionary<ChartDownloadSource, DownloadResult> Downloads { get; private set; } = new();
 
-    public async Task DownloadAsync(ChartDownloadSource source, CancellationToken cancellationToken = default)
+    public async Task DownloadAsync(ChartDownloadSource source, Chart chartInfo, CancellationToken cancellationToken = default)
     {
         if (Downloads.TryGetValue(source, out _))
         {
@@ -21,7 +21,7 @@ public class ChartDownloadService(IServiceProvider serviceProvider) : IChartDown
 
         var strategy = serviceProvider.GetRequiredKeyedService<IChartDownloadStrategy>(source.Source);
 
-        var downloadResult = await strategy.DownloadAsync(source, cancellationToken);
+        var downloadResult = await strategy.StartDownloadAsync(source, cancellationToken);
 
         if (downloadResult is not null)
         {

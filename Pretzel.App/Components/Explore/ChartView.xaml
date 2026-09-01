@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Pretzel.App.Components.Explore"
              xmlns:chartModels="clr-namespace:Pretzel.Core.Models.Chart;assembly=Pretzel.Core"
+             xmlns:converters="clr-namespace:Pretzel.App.Converters"
              x:Class="Pretzel.App.Components.Explore.ChartView"
              x:Name="root"
              x:DataType="chartModels:Chart">
@@ -119,11 +120,18 @@
             </FlexLayout>
 
             <Button Grid.Column="4"
-                Text="Download"
+                    Text="Download"
                     FontSize="20"
                     TextColor="{StaticResource PrimaryLightText}"
-                    Command="{Binding Source={x:Reference root}, Path=DownloadCommand}"
-                    CommandParameter="{Binding DownloadSources[0]}" />
+                    Command="{Binding Source={x:Reference root}, Path=DownloadCommand}">
+                
+                <Button.CommandParameter>
+                    <MultiBinding Converter="{converters:ChartDownloadSourceTupleValueConverter}">
+                        <Binding Path="." />
+                        <Binding Path="DownloadSources[0]" />
+                    </MultiBinding>
+                </Button.CommandParameter>
+            </Button>
         </Grid>
     </Border>
     
