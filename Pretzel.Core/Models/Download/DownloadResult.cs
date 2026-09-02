@@ -1,20 +1,23 @@
-﻿namespace Pretzel.Core.Models.Download;
+﻿using Pretzel.Core.Enums;
+
+namespace Pretzel.Core.Models.Download;
 
 public class DownloadResult : IAsyncDisposable
 {
-    private readonly HttpResponseMessage response;
+    private readonly HttpResponseMessage? response;
 
     public Stream? Stream { get; }
     public long? TotalBytes { get; }
-    public string? ContentType { get; }
-    public string? FileName { get; set; }
+    public DownloadStatus Status { get; set; } = DownloadStatus.Starting;
+    public CancellationTokenSource? Cts { get; set; }
+
+    public DownloadResult() { }
 
     public DownloadResult(HttpResponseMessage response, Stream stream)
     {
         this.response = response;
 
         TotalBytes = response.Content.Headers.ContentLength;
-        ContentType = response.Content.Headers.ContentType?.MediaType;
         Stream = stream;
     }
 
@@ -29,6 +32,9 @@ public class DownloadResult : IAsyncDisposable
         {
             response.Dispose();
         }
+
+        Cts.Cancel();
+        Cts.Dispose();
     }
 
     public async ValueTask DisposeAsync()

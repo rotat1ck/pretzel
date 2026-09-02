@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Pretzel.Core.Enums;
 using Pretzel.Core.Interfaces.Download;
 using Pretzel.Core.Models.Chart;
 using Pretzel.Core.Models.Download;
@@ -6,9 +7,11 @@ using System.Collections.Concurrent;
 
 namespace Pretzel.Infrastructure.Services.Download;
 
-public class ChartDownloadService(IServiceProvider serviceProvider) : IChartDownloadService
+public class ChartDownloadService(IServiceProvider serviceProvider,
+                                  IChartWriterService writerService) : IChartDownloadService
 {
     private readonly IServiceProvider serviceProvider = serviceProvider;
+    private readonly IChartWriterService writerService = writerService;
 
     public ConcurrentDictionary<ChartDownloadSource, DownloadResult> Downloads { get; private set; } = new();
 
@@ -16,19 +19,42 @@ public class ChartDownloadService(IServiceProvider serviceProvider) : IChartDown
     {
         if (Downloads.TryGetValue(source, out _))
         {
-            await RemoveDownloadAsync(source);
+            return;
         }
 
+        var downloadResult = new DownloadResult();
+        Downloads.TryAdd(source, downloadResult);
+
+        // send StatusChangedMessage here later
+
+        var cts = new CancellationTokenSource();
         var strategy = serviceProvider.GetRequiredKeyedService<IChartDownloadStrategy>(source.Source);
 
-        var downloadResult = await strategy.StartDownloadAsync(source, cancellationToken);
-
-        if (downloadResult is not null)
+        try
         {
-            downloadResult.FileName = $"test.sng";
+            var result = await strategy.DownloadAsync(source, cts.Token);
+            downloadResult.Status = result?.Status ?? DownloadStatus.Failed;
 
-            Downloads.TryAdd(source, downloadResult);
+            if (result is not null)
+            {
+                // cts is owned and disposed by downloadResult 
+                result.Cts = cts;
+                result.Status = DownloadStatus.Downloading;
+                Downloads[source] = result;
+
+                // send StatusChangedMessage here later
+
+                result.Status = await writerService.TryWriteChartAsync(result, chartInfo, result.Cts.Token);
+
+            }
         }
+        catch
+        {
+            downloadResult.Status = DownloadStatus.Failed;
+            // send StatusChangedMessage here later
+        }
+
+
     }
 
     public DownloadResult? GetDownloadResult(ChartDownloadSource source)
