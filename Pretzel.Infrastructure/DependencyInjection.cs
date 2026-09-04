@@ -2,7 +2,9 @@
 using Pretzel.Core.Enums;
 using Pretzel.Core.Interfaces;
 using Pretzel.Core.Interfaces.Download;
+using Pretzel.Core.Models.Search;
 using Pretzel.Infrastructure.Services.Download;
+using Pretzel.Infrastructure.Services.Providers;
 using Pretzel.Infrastructure.Services.Search;
 
 namespace Pretzel.Infrastructure;
@@ -39,7 +41,16 @@ public static class DependencyInjection
         services.AddKeyedSingleton<IChartDownloadStrategy, ChorusEncoreDownloadStrategy>(ChartSource.ChorusEncore);
 
         services.AddSingleton<IChartDownloadService, ChartDownloadService>();
+        services.AddSingleton<IChartWriterService, ChartWriterService>();
 
+        return services;
+    }
+
+    public static IServiceCollection RegisterSettingProviders(this IServiceCollection services, string appDataDirectory)
+    {
+        services.AddSingleton<ISettingProvider<ChartSearchSettings>>(provider => new SettingsProvider<ChartSearchSettings>(appDataDirectory, "search_settings.json"));
+        //services.AddSingleton<ISettingProvider>
+        
         return services;
     }
 }

@@ -9,6 +9,7 @@ public class ChartWriterService : IChartWriterService
 {
     public Task<DownloadStatus> TryWriteChartAsync(DownloadResult downloadResult, Chart chartInfo, CancellationToken cancellationToken)
     {
+        throw new NotImplementedException();
         try
         {
 

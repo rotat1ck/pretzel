@@ -2,21 +2,16 @@
 
 namespace Pretzel.Core.Models.Search;
 
-public class ChartSearchSettings
+public class ChartSearchSettings : ICloneable
 {
     public bool ContinueSearchWithUnsupportedOptions { get; set; } = true;
     public List<ChartSource> EnabledSources { get; set; } = [ChartSource.ChorusEncore, ChartSource.RhythmVerse];
 
-    public ChartSearchSettings() { }
-
-    public ChartSearchSettings(ChartSearchSettings other)
+    public object Clone()
     {
-        if (other == null)
-        {
-            throw new ArgumentNullException(nameof(other));
-        }
+        var clone = (ChartSearchSettings)this.MemberwiseClone();
+        clone.EnabledSources = new(this.EnabledSources);
 
-        EnabledSources = new(other.EnabledSources);
-        ContinueSearchWithUnsupportedOptions = other.ContinueSearchWithUnsupportedOptions;
+        return clone;
     }
 }

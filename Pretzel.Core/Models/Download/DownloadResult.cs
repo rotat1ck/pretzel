@@ -33,8 +33,11 @@ public class DownloadResult : IAsyncDisposable
             response.Dispose();
         }
 
-        Cts.Cancel();
-        Cts.Dispose();
+        if (Cts is not null)
+        {
+            Cts.Cancel();
+            Cts.Dispose();
+        }
     }
 
     public async ValueTask DisposeAsync()

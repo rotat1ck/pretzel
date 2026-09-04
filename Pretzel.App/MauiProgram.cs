@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Maui.LifecycleEvents;
 using Microsoft.Maui.Platform;
 using Pretzel.App.ViewModels;
+using Pretzel.App.WinUI;
 using Pretzel.Core.Interfaces;
 using Pretzel.Core.Models.Search;
 using Pretzel.Infrastructure;
@@ -53,7 +54,7 @@ public static class MauiProgram
 
 
         builder.Services.AddInfrastructure();
-        builder.Services.RegisterSettingProviders();
+        builder.Services.RegisterSettingProviders(FileSystem.AppDataDirectory);
 
 #if DEBUG
         builder.Logging.AddDebug();
@@ -62,10 +63,5 @@ public static class MauiProgram
         return builder.Build();
     }
 
-    public static IServiceCollection RegisterSettingProviders(this IServiceCollection services)
-    {
-        services.AddSingleton<ISettingProvider<ChartSearchSettings>>(provider => new ChartSearchSettingsProvider(FileSystem.Current.AppDataDirectory));
-
-        return services;
-    }
+    
 }

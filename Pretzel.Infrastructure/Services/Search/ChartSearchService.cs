@@ -17,7 +17,7 @@ public class ChartSearchService : IChartSearchService
 
     public async IAsyncEnumerable<ChartSearchResults> SearchAsync(ChartSearchOptions searchOptions, CancellationToken cancellationToken = default)
     {
-        var settings = searchSettingProvider.GetValue();
+        var settings = searchSettingProvider.Value;
 
         var strategies = settings.EnabledSources.Select(key => serviceProvider.GetRequiredKeyedService<IChartSearchStrategy>(key)).ToList();
         if (!settings.ContinueSearchWithUnsupportedOptions)
