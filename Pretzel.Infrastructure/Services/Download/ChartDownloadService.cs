@@ -22,30 +22,31 @@ public class ChartDownloadService(IServiceProvider serviceProvider,
             return;
         }
 
-        var downloadResult = new DownloadResult();
+        var downloadResult = new DownloadResult()
+        {
+            Cts = new CancellationTokenSource()
+        };
         Downloads.TryAdd(source, downloadResult);
 
         // send StatusChangedMessage here later
 
-        var cts = new CancellationTokenSource();
         var strategy = serviceProvider.GetRequiredKeyedService<IChartDownloadStrategy>(source.Source);
 
         try
         {
-            var result = await strategy.DownloadAsync(source, cts.Token);
+            var result = await strategy.DownloadAsync(source, downloadResult.Cts.Token);
             downloadResult.Status = result?.Status ?? DownloadStatus.Failed;
 
             if (result is not null)
             {
                 // cts is owned and disposed by downloadResult 
-                result.Cts = cts;
+                result.Cts = downloadResult.Cts;
                 result.Status = DownloadStatus.Downloading;
                 Downloads[source] = result;
 
                 // send StatusChangedMessage here later
 
-                result.Status = await writerService.TryWriteChartAsync(result, chartInfo, result.Cts.Token);
-
+                result.Status = await writerService.WriteChartAsync(result, chartInfo, result.Cts.Token);
             }
         }
         catch

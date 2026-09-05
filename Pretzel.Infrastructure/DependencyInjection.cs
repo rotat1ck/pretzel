@@ -2,6 +2,7 @@
 using Pretzel.Core.Enums;
 using Pretzel.Core.Interfaces;
 using Pretzel.Core.Interfaces.Download;
+using Pretzel.Core.Models.Download;
 using Pretzel.Core.Models.Search;
 using Pretzel.Infrastructure.Services.Download;
 using Pretzel.Infrastructure.Services.Providers;
@@ -49,8 +50,8 @@ public static class DependencyInjection
     public static IServiceCollection RegisterSettingProviders(this IServiceCollection services, string appDataDirectory)
     {
         services.AddSingleton<ISettingProvider<ChartSearchSettings>>(provider => new SettingsProvider<ChartSearchSettings>(appDataDirectory, "search_settings.json"));
-        //services.AddSingleton<ISettingProvider>
-        
+        services.AddSingleton<ISettingProvider<ChartDownloadSettings>>(provider => new SettingsProvider<ChartDownloadSettings>(appDataDirectory, "download_settings.json"));
+
         return services;
     }
 }

@@ -6,5 +6,5 @@ namespace Pretzel.Core.Interfaces.Download;
 
 public interface IChartWriterService
 {
-    Task<DownloadStatus> TryWriteChartAsync(DownloadResult downloadResult, Chart chartInfo, CancellationToken cancellationToken);
+    Task<DownloadStatus> WriteChartAsync(DownloadResult downloadResult, Chart chartInfo, CancellationToken cancellationToken);
 }

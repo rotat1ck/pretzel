@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.AccessControl;
-using System.Text;
+﻿using Pretzel.Core.Interfaces;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Pretzel.Core.Interfaces;
-using Pretzel.Core.Models.Search;
 
 namespace Pretzel.Infrastructure.Services.Providers;
 
 public class SettingsProvider<T> : ISettingProvider<T> where T : class, ICloneable, new()
 {
     private readonly SemaphoreSlim semaphore = new(1, 1);
-    private readonly JsonSerializerOptions jsonOptions = new() 
+    private readonly JsonSerializerOptions jsonOptions = new()
     {
-        WriteIndented = true, 
-        Converters = { new JsonStringEnumConverter() } 
+        WriteIndented = true,
+        Converters = { new JsonStringEnumConverter() }
     };
 
     private volatile T settings = null!;
