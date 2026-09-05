@@ -8,7 +8,7 @@ public interface IChartDownloadService
 {
     ConcurrentDictionary<ChartDownloadSource, DownloadResult> Downloads { get; }
 
-    Task DownloadAsync(ChartDownloadSource source, Chart chartInfo, CancellationToken cancellationToken = default);
+    Task DownloadAsync(ChartDownloadSource source, Chart chartInfo);
 
     DownloadResult? GetDownloadResult(ChartDownloadSource source);
 

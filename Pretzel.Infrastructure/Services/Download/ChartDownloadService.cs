@@ -15,7 +15,7 @@ public class ChartDownloadService(IServiceProvider serviceProvider,
 
     public ConcurrentDictionary<ChartDownloadSource, DownloadResult> Downloads { get; private set; } = new();
 
-    public async Task DownloadAsync(ChartDownloadSource source, Chart chartInfo, CancellationToken cancellationToken = default)
+    public async Task DownloadAsync(ChartDownloadSource source, Chart chartInfo)
     {
         if (Downloads.TryGetValue(source, out _))
         {

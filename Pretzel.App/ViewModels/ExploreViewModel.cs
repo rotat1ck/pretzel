@@ -59,29 +59,7 @@ public partial class ExploreViewModel(IChartSearchService searchService,
     [RelayCommand]
     public async Task DownloadChart((Chart chartInfo, ChartDownloadSource chartDownloadSource) parameter)
     {
-
-        /*
-         * temporarily as null 
-         * cts for downloads will be managed by service itself
-         * and directed by messages from a "DownloadsView"
-        */
-        await downloadService.DownloadAsync(parameter.chartDownloadSource, parameter.chartInfo, default);
-
-        //var downloadResult = downloadService.Downloads[selectedSource];
-        //if (downloadResult is not null && downloadResult.Stream is not null)
-        //{
-        //    var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-        //    var songsFolder = Path.Combine(documents, "Test Songs");
-        //    if (!Directory.Exists(songsFolder))
-        //    {
-        //        Directory.CreateDirectory(songsFolder);
-        //    }
-
-        //    using FileStream fs = new FileStream(Path.Combine(songsFolder, downloadResult.FileName!), FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write);
-        //    await downloadResult.Stream.CopyToAsync(fs);
-        //}
-
-        //await downloadService.DisposeDownloadUnmanagedResourcesAsync(selectedSource);
+        await downloadService.DownloadAsync(parameter.chartDownloadSource, parameter.chartInfo);
     }
 
     [RelayCommand]
