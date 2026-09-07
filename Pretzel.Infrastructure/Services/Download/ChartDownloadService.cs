@@ -17,7 +17,8 @@ public class ChartDownloadService(IServiceProvider serviceProvider,
 
     public async Task DownloadAsync(ChartDownloadSource source, Chart chartInfo)
     {
-        if (Downloads.TryGetValue(source, out _))
+        if (Downloads.TryGetValue(source, out var existingDownload) 
+            && existingDownload.Status is DownloadStatus.Starting or DownloadStatus.Downloading or DownloadStatus.Writing)
         {
             return;
         }
@@ -47,9 +48,10 @@ public class ChartDownloadService(IServiceProvider serviceProvider,
                 // send StatusChangedMessage here later
 
                 result.Status = await writerService.WriteChartAsync(result, chartInfo, result.Cts.Token);
+
             }
         }
-        catch
+        catch (Exception ex)
         {
             downloadResult.Status = DownloadStatus.Failed;
             // send StatusChangedMessage here later

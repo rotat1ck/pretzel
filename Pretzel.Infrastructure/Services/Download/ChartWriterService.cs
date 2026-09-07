@@ -47,10 +47,31 @@ public class ChartWriterService(ISettingProvider<ChartDownloadSettings> download
         }
 
         var filePath = Path.Combine(selectedDirectory, ComposeFileName(settings.FileNamePattern, chartInfo));
-        using FileStream fs = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
-        await downloadResult.Stream.CopyToAsync(fs, cancellationToken);
+        try
+        {
+            using FileStream fs = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
+            await downloadResult.Stream.CopyToAsync(fs, cancellationToken);
+        }
+        catch (OperationCanceledException)
+        {
+            RemoveFile(filePath);
+            return DownloadStatus.Cancelled;
+        } 
+        catch
+        {
+            RemoveFile(filePath);
+            throw;
+        }
 
         return DownloadStatus.Finished;
+    }
+
+    private void RemoveFile(string path)
+    {
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+        }        
     }
 
     private string ComposeFileName(string pattern, Chart chartInfo)

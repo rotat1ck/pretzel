@@ -5,6 +5,7 @@ namespace Pretzel.Core.Models.Download;
 public class DownloadResult : IAsyncDisposable
 {
     private readonly HttpResponseMessage? response;
+    private bool disposed = false;
 
     public Stream? Stream { get; }
     public long? TotalBytes { get; }
@@ -23,6 +24,11 @@ public class DownloadResult : IAsyncDisposable
 
     public async ValueTask FreeUnmanagedResourcesAsync()
     {
+        if (disposed)
+        {
+            return;
+        }
+
         if (Stream is not null)
         {
             await Stream.DisposeAsync();
@@ -38,6 +44,8 @@ public class DownloadResult : IAsyncDisposable
             Cts.Cancel();
             Cts.Dispose();
         }
+
+        disposed = true;
     }
 
     public async ValueTask DisposeAsync()
