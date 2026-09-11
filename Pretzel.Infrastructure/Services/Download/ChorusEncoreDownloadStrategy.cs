@@ -18,6 +18,6 @@ public class ChorusEncoreDownloadStrategy(IHttpClientFactory clientFactory) : IC
         var response = await client.GetAsync($"{source.ChartUri}.sng", HttpCompletionOption.ResponseHeadersRead, cancellationToken);
         var stream = await response.Content.ReadAsStreamAsync();
 
-        return new DownloadResult(response, stream);
+        return new DownloadResult(response, stream) { FileType = DownloadFileType.Sng };
     }
 }

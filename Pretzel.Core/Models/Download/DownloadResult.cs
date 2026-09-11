@@ -10,6 +10,7 @@ public class DownloadResult : IAsyncDisposable
     public Stream? Stream { get; }
     public long? TotalBytes { get; }
     public DownloadStatus Status { get; set; } = DownloadStatus.Starting;
+    public DownloadFileType FileType { get; set; }
     public CancellationTokenSource? Cts { get; set; }
 
     public DownloadResult() { }

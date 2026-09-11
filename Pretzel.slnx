@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Pretzel.Dependencies/">
+    <Project Path="Pretzel.Dependencies/SngFileFormat/SngFileFormat.csproj" Id="1312554e-b56e-4d45-b1bd-b5a9d1de90a7" />
+  </Folder>
   <Project Path="Pretzel.App/Pretzel.App.csproj" Id="54cfa07b-6745-4892-8d55-47731fd8dd28">
     <Deploy Solution="Debug|*" />
   </Project>
