@@ -1,4 +1,5 @@
-﻿using Pretzel.Core.Enums;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Pretzel.Core.Enums;
 using Pretzel.Core.Interfaces;
 using Pretzel.Core.Interfaces.Download;
 using Pretzel.Core.Models.Chart;
@@ -6,11 +7,14 @@ using Pretzel.Core.Models.Download;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace Pretzel.Infrastructure.Services.Download;
+namespace Pretzel.Infrastructure.Services.Writer;
 
-public class ChartWriterService(ISettingProvider<ChartDownloadSettings> downloadSettingsProvider) : IChartWriterService
+public class ChartWriterService(ISettingProvider<ChartDownloadSettings> downloadSettingsProvider,
+                                IServiceProvider serviceProvider) : IChartWriterService
 {
     private readonly ISettingProvider<ChartDownloadSettings> downloadSettingsProvider = downloadSettingsProvider;
+    private readonly IServiceProvider serviceProvider = serviceProvider;
+
     private static readonly char[] illegalCharacters = Path.GetInvalidFileNameChars();
 
     public async Task<DownloadStatus> WriteChartAsync(DownloadResult downloadResult, Chart chartInfo, CancellationToken cancellationToken)
@@ -46,32 +50,20 @@ public class ChartWriterService(ISettingProvider<ChartDownloadSettings> download
             throw new InvalidOperationException($"Chart stream is null");
         }
 
-        var filePath = Path.Combine(selectedDirectory, ComposeFileName(settings.FileNamePattern, chartInfo));
+        var chartName = ComposeFileName(settings.FileNamePattern, chartInfo);
+
+        var writerStrategy = serviceProvider.GetRequiredKeyedService<IChartWriterStrategy>(downloadResult.FileType);
+
         try
         {
-            using FileStream fs = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
-            await downloadResult.Stream.CopyToAsync(fs, cancellationToken);
+            await writerStrategy.WriteChartAsync(downloadResult, selectedDirectory, chartName, cancellationToken);
         }
         catch (OperationCanceledException)
         {
-            RemoveFile(filePath);
             return DownloadStatus.Cancelled;
-        } 
-        catch
-        {
-            RemoveFile(filePath);
-            throw;
         }
 
         return DownloadStatus.Finished;
-    }
-
-    private void RemoveFile(string path)
-    {
-        if (File.Exists(path))
-        {
-            File.Delete(path);
-        }        
     }
 
     private string ComposeFileName(string pattern, Chart chartInfo)

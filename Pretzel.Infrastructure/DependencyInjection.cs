@@ -7,6 +7,7 @@ using Pretzel.Core.Models.Search;
 using Pretzel.Infrastructure.Services.Download;
 using Pretzel.Infrastructure.Services.Providers;
 using Pretzel.Infrastructure.Services.Search;
+using Pretzel.Infrastructure.Services.Writer;
 
 namespace Pretzel.Infrastructure;
 

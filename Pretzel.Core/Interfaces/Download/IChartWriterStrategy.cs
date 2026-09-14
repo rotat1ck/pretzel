@@ -6,5 +6,5 @@ namespace Pretzel.Core.Interfaces.Download;
 public interface IChartWriterStrategy
 {
     DownloadFileType FileType { get; }
-    Task WriteChartAsync(DownloadResult downloadResult, string directoryName, CancellationToken cancellationToken);
+    Task WriteChartAsync(DownloadResult downloadResult, string targetDirectory, string chartName, CancellationToken cancellationToken);
 }
