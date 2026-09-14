@@ -4,7 +4,16 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <RootNamespace>Pretzel.Dependencies.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="SngTool\**" />
+    <EmbeddedResource Remove="SngTool\**" />
+    <None Remove="SngTool\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="SngTool\SngCli\SngCli.csproj" />
+  </ItemGroup>
 
 </Project>

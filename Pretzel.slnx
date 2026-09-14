@@ -1,6 +1,10 @@
 <Solution>
-  <Folder Name="/Pretzel.Dependencies/">
-    <Project Path="Pretzel.Dependencies/SngFileFormat/SngFileFormat.csproj" Id="1312554e-b56e-4d45-b1bd-b5a9d1de90a7" />
+  <Folder Name="/Pretzel.Dependencies/" />
+  <Folder Name="/Pretzel.Dependencies/SngFileFormat/">
+    <Project Path="Pretzel.Dependencies/SngFileFormat/SngFileFormat.csproj" Id="f903da11-4fcd-4e67-b3f8-7c01077942fc" />
+    <Project Path="Pretzel.Dependencies/SngFileFormat/SngTool/SngCli/SngCli.csproj" />
+    <Project Path="Pretzel.Dependencies/SngFileFormat/SngTool/SngLib/SngLib.csproj" />
+    <Project Path="Pretzel.Dependencies/SngFileFormat/SngTool/SongLib/SongLib.csproj" />
   </Folder>
   <Project Path="Pretzel.App/Pretzel.App.csproj" Id="54cfa07b-6745-4892-8d55-47731fd8dd28">
     <Deploy Solution="Debug|*" />
