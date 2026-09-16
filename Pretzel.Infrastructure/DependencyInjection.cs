@@ -40,10 +40,11 @@ public static class DependencyInjection
 
         services.AddSingleton<IChartSearchService, ChartSearchService>();
 
+        services.AddSingleton<IChartDownloadService, ChartDownloadService>();
         services.AddKeyedSingleton<IChartDownloadStrategy, ChorusEncoreDownloadStrategy>(ChartSource.ChorusEncore);
 
-        services.AddSingleton<IChartDownloadService, ChartDownloadService>();
         services.AddSingleton<IChartWriterService, ChartWriterService>();
+        services.AddKeyedSingleton<IChartWriterStrategy, SngChartWriterStrategy>(DownloadFileType.Sng);
 
         return services;
     }

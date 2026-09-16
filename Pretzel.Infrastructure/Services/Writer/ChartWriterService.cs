@@ -45,13 +45,8 @@ public class ChartWriterService(ISettingProvider<ChartDownloadSettings> download
             Directory.CreateDirectory(selectedDirectory);
         }
 
-        if (downloadResult.Stream is null)
-        {
-            throw new InvalidOperationException($"Chart stream is null");
-        }
-
+        
         var chartName = ComposeFileName(settings.FileNamePattern, chartInfo);
-
         var writerStrategy = serviceProvider.GetRequiredKeyedService<IChartWriterStrategy>(downloadResult.FileType);
 
         try

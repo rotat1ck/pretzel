@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Pretzel.Core\Pretzel.Core.csproj" />
+    <ProjectReference Include="..\Pretzel.Dependencies\SngFileFormat\SngFileFormat.csproj" />
   </ItemGroup>
 
 </Project>

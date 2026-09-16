@@ -64,11 +64,8 @@ public partial class ExploreViewModel(IChartSearchService searchService,
         {
             await downloadService.RemoveDownloadAsync(parameter.chartDownloadSource);
         } 
-        else
-        {
-            await downloadService.DownloadAsync(parameter.chartDownloadSource, parameter.chartInfo);
-        }
-
+        
+        await downloadService.DownloadAsync(parameter.chartDownloadSource, parameter.chartInfo);
     }
 
     [RelayCommand]

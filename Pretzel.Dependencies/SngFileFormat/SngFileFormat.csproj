@@ -13,7 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="SngTool\SngCli\SngCli.csproj" />
+	<ProjectReference Include="SngTool\SngCli\SngCli.csproj">
+      <PrivateAssets>All</PrivateAssets>
+	  <ExcludeAssets>Compile</ExcludeAssets>
+	</ProjectReference>
   </ItemGroup>
 
 </Project>

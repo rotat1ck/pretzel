@@ -25,12 +25,10 @@ namespace SngCli
 
         public static async Task DecodeSong(string sngPath)
         {
-            var conf = SngDecodingOptions.Instance;
             var folderName = Path.GetFileNameWithoutExtension(sngPath);
             var parentFolder = Path.GetDirectoryName(sngPath);
 
-            var relative = Path.GetRelativePath(conf.InputPath!, parentFolder!);
-            var outputFolder = Path.Combine(Path.GetFullPath(conf.OutputPath!), relative, folderName);
+            var outputFolder = Path.Combine(parentFolder!, folderName);
             
             SngFile sngFile = SngSerializer.LoadSngFile(sngPath);
 
