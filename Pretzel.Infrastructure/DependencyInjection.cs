@@ -35,16 +35,17 @@ public static class DependencyInjection
             client.Timeout = TimeSpan.FromSeconds(5);
         });
 
+        services.AddSingleton<IChartSearchService, ChartSearchService>();
         services.AddKeyedSingleton<IChartSearchStrategy, ChorusEncoreSearchStrategy>(ChartSource.ChorusEncore);
         services.AddKeyedSingleton<IChartSearchStrategy, RhythmVerseSearchStrategy>(ChartSource.RhythmVerse);
 
-        services.AddSingleton<IChartSearchService, ChartSearchService>();
-
         services.AddSingleton<IChartDownloadService, ChartDownloadService>();
         services.AddKeyedSingleton<IChartDownloadStrategy, ChorusEncoreDownloadStrategy>(ChartSource.ChorusEncore);
+        services.AddKeyedSingleton<IChartDownloadStrategy, RhythmVerseDownloadStrategy>(ChartSource.RhythmVerse);
 
         services.AddSingleton<IChartWriterService, ChartWriterService>();
         services.AddKeyedSingleton<IChartWriterStrategy, SngChartWriterStrategy>(DownloadFileType.Sng);
+        services.AddKeyedSingleton<IChartWriterStrategy, ZipChartWriterStrategy>(DownloadFileType.Zip);
 
         return services;
     }

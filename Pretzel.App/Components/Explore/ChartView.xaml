@@ -120,10 +120,19 @@
             </FlexLayout>
 
             <Button Grid.Column="4"
-                    Text="Download"
+                    Text="Unsuppported"
+                    IsEnabled="False"
                     FontSize="20"
                     TextColor="{StaticResource PrimaryLightText}"
                     Command="{Binding Source={x:Reference root}, Path=DownloadCommand}">
+                <Button.Triggers>
+                    <DataTrigger TargetType="Button"
+                                 Binding="{Binding DownloadSources[0].ExtensionData}"
+                                 Value="{x:Null}">
+                        <Setter Property="Text" Value="Download" />
+                        <Setter Property="IsEnabled" Value="True" />
+                    </DataTrigger>
+                </Button.Triggers>
                 
                 <Button.CommandParameter>
                     <MultiBinding Converter="{converters:ChartDownloadSourceTupleValueConverter}">

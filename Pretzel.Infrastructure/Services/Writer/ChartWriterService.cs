@@ -45,7 +45,6 @@ public class ChartWriterService(ISettingProvider<ChartDownloadSettings> download
             Directory.CreateDirectory(selectedDirectory);
         }
 
-        
         var chartName = ComposeFileName(settings.FileNamePattern, chartInfo);
         var writerStrategy = serviceProvider.GetRequiredKeyedService<IChartWriterStrategy>(downloadResult.FileType);
 

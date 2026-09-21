@@ -32,6 +32,9 @@ public class SngChartWriterStrategy : IChartWriterStrategy
 
         await SngDecoder.DecodeSong(filePath);
         
-        // remove file after decoding into a folder
+        if (File.Exists(filePath))
+        {
+            File.Delete(filePath);
+        }
     }
 }
