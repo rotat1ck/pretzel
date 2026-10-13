@@ -6,11 +6,11 @@ namespace Pretzel.Core.Interfaces.Download;
 
 public interface IChartDownloadService
 {
-    ConcurrentDictionary<ChartDownloadSource, DownloadResult> Downloads { get; }
+    ConcurrentDictionary<ChartDownloadSource, ChartDownload> Downloads { get; }
 
     Task DownloadAsync(ChartDownloadSource source, Chart chartInfo);
 
-    DownloadResult? GetDownloadResult(ChartDownloadSource source);
+    ChartDownload? GetChartDownload(ChartDownloadSource source);
 
     Task RemoveDownloadAsync(ChartDownloadSource source);
     Task DisposeDownloadUnmanagedResourcesAsync(ChartDownloadSource source);

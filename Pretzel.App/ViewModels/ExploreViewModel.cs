@@ -59,7 +59,7 @@ public partial class ExploreViewModel(IChartSearchService searchService,
     [RelayCommand(AllowConcurrentExecutions = true)]
     public async Task DownloadChart((Chart chartInfo, ChartDownloadSource chartDownloadSource) parameter)
     {
-        var existingDownload = downloadService.GetDownloadResult(parameter.chartDownloadSource);
+        var existingDownload = downloadService.GetChartDownload(parameter.chartDownloadSource);
         if (existingDownload is not null)
         {
             await downloadService.RemoveDownloadAsync(parameter.chartDownloadSource);

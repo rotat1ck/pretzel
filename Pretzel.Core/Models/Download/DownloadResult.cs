@@ -9,10 +9,8 @@ public class DownloadResult : IAsyncDisposable
 
     public Stream? Stream { get; }
     public long? TotalBytes { get; }
-    public DownloadStatus Status { get; set; } = DownloadStatus.Starting;
     public DownloadFileType FileType { get; set; }
-    public CancellationTokenSource? Cts { get; set; }
-
+    
     public DownloadResult() { }
 
     public DownloadResult(HttpResponseMessage response, Stream stream)
@@ -38,12 +36,6 @@ public class DownloadResult : IAsyncDisposable
         if (response is not null)
         {
             response.Dispose();
-        }
-
-        if (Cts is not null)
-        {
-            Cts.Cancel();
-            Cts.Dispose();
         }
 
         disposed = true;
