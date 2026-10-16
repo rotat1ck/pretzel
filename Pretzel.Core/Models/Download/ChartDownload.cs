@@ -2,7 +2,7 @@
 
 namespace Pretzel.Core.Models.Download;
 
-public class ChartDownload : IDisposable
+public class ChartDownload : IAsyncDisposable
 {
     public DownloadStatus Status { get; set; } = DownloadStatus.Starting;
     public CancellationTokenSource Cts { get; set; } = new();
@@ -11,7 +11,7 @@ public class ChartDownload : IDisposable
 
     private bool disposed = false;
 
-    public void Dispose()
+    public async ValueTask DisposeAsync()
     {
         if (disposed)
         {
@@ -22,6 +22,11 @@ public class ChartDownload : IDisposable
         {
             Cts.Cancel();
             Cts.Dispose();
+        }
+
+        if (Result is not null)
+        {
+            await Result.DisposeAsync();
         }
 
         disposed = true;

@@ -13,5 +13,4 @@ public interface IChartDownloadService
     ChartDownload? GetChartDownload(ChartDownloadSource source);
 
     Task RemoveDownloadAsync(ChartDownloadSource source);
-    Task DisposeDownloadUnmanagedResourcesAsync(ChartDownloadSource source);
 }

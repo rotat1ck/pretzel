@@ -21,7 +21,7 @@ public class DownloadResult : IAsyncDisposable
         Stream = stream;
     }
 
-    public async ValueTask FreeUnmanagedResourcesAsync()
+    public async ValueTask DisposeAsync()
     {
         if (disposed)
         {
@@ -39,10 +39,5 @@ public class DownloadResult : IAsyncDisposable
         }
 
         disposed = true;
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        await FreeUnmanagedResourcesAsync();
     }
 }

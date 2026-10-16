@@ -20,57 +20,55 @@ public class ChartDownloadService(IServiceProvider serviceProvider,
 
     public async Task DownloadAsync(ChartDownloadSource source, Chart chartInfo)
     {
-        if (Downloads.TryGetValue(source, out var existingDownload) 
-            && existingDownload.Status is DownloadStatus.Starting or DownloadStatus.Downloading or DownloadStatus.Writing)
+        var chartDownload = Downloads.GetOrAdd(source, src => new ChartDownload());
+        lock (chartDownload)
         {
-            return;
+            if (chartDownload.Status is DownloadStatus.Starting or DownloadStatus.Downloading or DownloadStatus.Writing)
+            {
+                // an exception system or notification for ui?
+                return;
+            }
         }
 
-        var chartDownload = new ChartDownload();
-        Downloads.TryAdd(source, chartDownload);
-
-        // send StatusChangedMessage here later
-        await NotifyStatusChangedAsync(source, chartInfo);
+        // send AddedMessage here later
+        await mediator.Publish(new ChartDownloadStatusChangedNotification(source));
 
         var strategy = serviceProvider.GetRequiredKeyedService<IChartDownloadStrategy>(source.Source);
 
         try
         {
             var result = await strategy.DownloadAsync(source, chartDownload.Cts.Token);
-            chartDownload.Status = DownloadStatus.Downloading;
+            await UpdateDownloadAsync(source, chartDownload => chartDownload.Status = DownloadStatus.Downloading);
 
             if (result is not null)
             {
-                // cts is owned and disposed by chartDownload 
-                //result.Cts = downloadResult.Cts;
-                //result.Status = DownloadStatus.Downloading;
-                //Downloads[source] = result;
-                chartDownload.Result = result;
+                await UpdateDownloadAsync(source, chartDownload => chartDownload.Result = result);
 
-
-                // send StatusChangedMessage here later
-                await NotifyStatusChangedAsync(source, chartInfo);
-
-                chartDownload.Status = await writerService.WriteChartAsync(result, chartInfo, chartDownload.Cts.Token);
-                await NotifyStatusChangedAsync(source, chartInfo);
+                var status = await writerService.WriteChartAsync(result, chartInfo, chartDownload.Cts.Token);
+                await UpdateDownloadAsync(source, chartDownload => chartDownload.Status = status);
             }
         }
         catch (Exception ex)
         {
-            chartDownload.Status = DownloadStatus.Failed;
-            // send StatusChangedMessage here later
-            await NotifyStatusChangedAsync(source, chartInfo);
+            await UpdateDownloadAsync(source, chartDownload => chartDownload.Status = DownloadStatus.Failed);
         }
     }
 
-    private async Task NotifyStatusChangedAsync(ChartDownloadSource source, Chart chartInfo)
+    private async Task UpdateDownloadAsync(ChartDownloadSource source, Action<ChartDownload> action)
     {
-        await mediator.Publish(new ChartDownloadStatusChangedNotification
+        var chartDownload = GetChartDownload(source);
+        if (chartDownload is null)
         {
-            Source = source,
-            ChartInfo = chartInfo
-        });
-    }   
+            return;
+        }
+        
+        lock (chartDownload)
+        {
+            action(chartDownload);
+        }
+
+        await mediator.Publish(new ChartDownloadStatusChangedNotification(source));
+    } 
 
     public ChartDownload? GetChartDownload(ChartDownloadSource source)
     {
@@ -86,17 +84,8 @@ public class ChartDownloadService(IServiceProvider serviceProvider,
     {
         if (Downloads.TryRemove(source, out var chartDownload))
         {
-            await chartDownload.Result.DisposeAsync();
-            chartDownload.Dispose();
-        }
-    }
-
-    public async Task DisposeDownloadUnmanagedResourcesAsync(ChartDownloadSource source)
-    {
-        if (Downloads.TryGetValue(source, out var chartDownload))
-        {
-            await chartDownload.Result.FreeUnmanagedResourcesAsync();
-            chartDownload.Dispose();
+            //await chartDownload.Result.DisposeAsync();
+            await chartDownload.DisposeAsync();
         }
     }
 }
