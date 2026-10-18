@@ -18,25 +18,6 @@
               RowSpacing="16">
             <exploreComps:SearchOptionsView />
             <exploreComps:SearchResultsView Grid.Row="1"/>
-            <!--<StackLayout >
-                <HorizontalStackLayout>
-                    <SearchBar x:Name="MySearchBar" Placeholder="Search..."/>
-                    <Button Text="something"/>
-                    <Button Text="Open" Command="{Binding ToggleAdvancedCommand}"/>
-                </HorizontalStackLayout>
-
-                <toolkit:Expander IsExpanded="{Binding IsAdvancedSearch}">
-                    <toolkit:Expander.Behaviors>
-                        <comps:ExpanderAnimationBehavior Duration="200"/>
-                    </toolkit:Expander.Behaviors>
-                    <Border>
-                        <RoundRectangle BackgroundColor="Red" HeightRequest="500" />
-                    </Border>
-                </toolkit:Expander>
-
-                <Label FontSize="30" Text="this should move" />
-                <buttons:PrimaryButtonView ButtonCommand="{Binding SearchCommand}" ButtonText="EXECUTE SEARCH" ButtonImage="settings_icon.png" HeightRequest="50" />
-            </StackLayout>-->
         </Grid>
     </Border>
 </ContentPage>
