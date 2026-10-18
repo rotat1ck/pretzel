@@ -7,9 +7,10 @@
              x:Class="Pretzel.App.Components.Explore.SearchResultsView"
              x:DataType="viewModels:ExploreViewModel">
     
-    <StackLayout Spacing="16">
+    <Grid RowDefinitions="Auto,*" RowSpacing="16">
         <!-- search section separator -->
-        <Grid ColumnDefinitions="Auto,Auto,*"
+        <Grid Grid.Row="0"
+              ColumnDefinitions="Auto,Auto,*"
               RowDefinitions="Auto,Auto"
               ColumnSpacing="16"
               RowSpacing="5">
@@ -38,22 +39,21 @@
                             Background="{StaticResource PrimaryStroke}" />
         </Grid>
 
-        <ScrollView >
-            <CollectionView ItemsSource="{Binding DisplayCharts}">
-                
-                <CollectionView.EmptyViewTemplate>
-                    <DataTemplate>
-                        <Label Text="No charts to show" />
-                    </DataTemplate>
-                </CollectionView.EmptyViewTemplate>
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding DisplayCharts}">
 
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="chartModels:Chart">
-                        <local:ChartView DownloadCommand="{Binding Source={RelativeSource AncestorType={x:Type viewModels:ExploreViewModel}}, 
-                                                           Path=DownloadChartCommand}"/>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView> 
-        </ScrollView>
-    </StackLayout>
+            <CollectionView.EmptyViewTemplate>
+                <DataTemplate>
+                    <Label Text="No charts to show" />
+                </DataTemplate>
+            </CollectionView.EmptyViewTemplate>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="chartModels:Chart">
+                    <local:ChartView DownloadCommand="{Binding Source={RelativeSource AncestorType={x:Type viewModels:ExploreViewModel}}, 
+                                               Path=DownloadChartCommand}"/>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
 </ContentView>

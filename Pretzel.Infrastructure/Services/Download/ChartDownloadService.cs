@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using Pretzel.Core.Enums;
 using Pretzel.Core.Interfaces.Download;
 using Pretzel.Core.Models.Chart;
@@ -8,63 +9,72 @@ using System.Collections.Concurrent;
 namespace Pretzel.Infrastructure.Services.Download;
 
 public class ChartDownloadService(IServiceProvider serviceProvider,
-                                  IChartWriterService writerService) : IChartDownloadService
+                                  IChartWriterService writerService,
+                                  IMediator mediator) : IChartDownloadService
 {
     private readonly IServiceProvider serviceProvider = serviceProvider;
     private readonly IChartWriterService writerService = writerService;
+    private readonly IMediator mediator = mediator;
 
-    public ConcurrentDictionary<ChartDownloadSource, DownloadResult> Downloads { get; private set; } = new();
+    public ConcurrentDictionary<ChartDownloadSource, ChartDownload> Downloads { get; private set; } = new();
 
     public async Task DownloadAsync(ChartDownloadSource source, Chart chartInfo)
     {
-        if (Downloads.TryGetValue(source, out var existingDownload) 
-            && existingDownload.Status is DownloadStatus.Starting or DownloadStatus.Downloading or DownloadStatus.Writing)
+        var chartDownload = Downloads.GetOrAdd(source, src => new ChartDownload());
+        lock (chartDownload)
         {
-            return;
+            if (chartDownload.Status is DownloadStatus.Starting or DownloadStatus.Downloading or DownloadStatus.Writing)
+            {
+                // an exception system or notification for ui?
+                return;
+            }
         }
 
-        var downloadResult = new DownloadResult()
-        {
-            Cts = new CancellationTokenSource()
-        };
-        Downloads.TryAdd(source, downloadResult);
-
-        // send StatusChangedMessage here later
+        // send AddedMessage here later
+        await mediator.Publish(new ChartDownloadStatusChangedNotification(source));
 
         var strategy = serviceProvider.GetRequiredKeyedService<IChartDownloadStrategy>(source.Source);
 
         try
         {
-            var result = await strategy.DownloadAsync(source, downloadResult.Cts.Token);
-            downloadResult.Status = result?.Status ?? DownloadStatus.Failed;
+            var result = await strategy.DownloadAsync(source, chartDownload.Cts.Token);
+            await UpdateDownloadAsync(source, chartDownload => chartDownload.Status = DownloadStatus.Downloading);
 
             if (result is not null)
             {
-                // cts is owned and disposed by downloadResult 
-                result.Cts = downloadResult.Cts;
-                result.Status = DownloadStatus.Downloading;
-                Downloads[source] = result;
+                await UpdateDownloadAsync(source, chartDownload => chartDownload.Result = result);
 
-                // send StatusChangedMessage here later
-
-                result.Status = await writerService.WriteChartAsync(result, chartInfo, result.Cts.Token);
-
+                var status = await writerService.WriteChartAsync(result, chartInfo, chartDownload.Cts.Token);
+                await UpdateDownloadAsync(source, chartDownload => chartDownload.Status = status);
             }
         }
         catch (Exception ex)
         {
-            downloadResult.Status = DownloadStatus.Failed;
-            // send StatusChangedMessage here later
+            await UpdateDownloadAsync(source, chartDownload => chartDownload.Status = DownloadStatus.Failed);
         }
-
-
     }
 
-    public DownloadResult? GetDownloadResult(ChartDownloadSource source)
+    private async Task UpdateDownloadAsync(ChartDownloadSource source, Action<ChartDownload> action)
     {
-        if (Downloads.TryGetValue(source, out var downloadResult))
+        var chartDownload = GetChartDownload(source);
+        if (chartDownload is null)
         {
-            return downloadResult;
+            return;
+        }
+        
+        lock (chartDownload)
+        {
+            action(chartDownload);
+        }
+
+        await mediator.Publish(new ChartDownloadStatusChangedNotification(source));
+    } 
+
+    public ChartDownload? GetChartDownload(ChartDownloadSource source)
+    {
+        if (Downloads.TryGetValue(source, out var chartDownload))
+        {
+            return chartDownload;
         }
 
         return default;
@@ -72,17 +82,10 @@ public class ChartDownloadService(IServiceProvider serviceProvider,
 
     public async Task RemoveDownloadAsync(ChartDownloadSource source)
     {
-        if (Downloads.TryRemove(source, out var downloadResult))
+        if (Downloads.TryRemove(source, out var chartDownload))
         {
-            await downloadResult.DisposeAsync();
-        }
-    }
-
-    public async Task DisposeDownloadUnmanagedResourcesAsync(ChartDownloadSource source)
-    {
-        if (Downloads.TryGetValue(source, out var downloadResult))
-        {
-            await downloadResult.FreeUnmanagedResourcesAsync();
+            //await chartDownload.Result.DisposeAsync();
+            await chartDownload.DisposeAsync();
         }
     }
 }
