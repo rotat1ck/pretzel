@@ -3,10 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Pretzel.App.Components.Explore"
              xmlns:chartModels="clr-namespace:Pretzel.Core.Models.Chart;assembly=Pretzel.Core"
+             xmlns:viewModels="clr-namespace:Pretzel.App.ViewModels"
              xmlns:converters="clr-namespace:Pretzel.App.Converters"
              x:Class="Pretzel.App.Components.Explore.ChartView"
-             x:Name="root"
-             x:DataType="chartModels:Chart">
+             x:DataType="viewModels:ChartViewModel">
 
     <Border Padding="16"
             Stroke="{StaticResource PrimaryStroke}"
@@ -26,7 +26,7 @@
                     <Image HeightRequest="96"
                            Aspect="AspectFill">
                         <Image.Source>
-                            <UriImageSource Uri="{Binding DownloadSources[0].AlbumArtUri,
+                            <UriImageSource Uri="{Binding Chart.DownloadSources[0].AlbumArtUri,
                                                   FallbackValue='album_art_placeholder.png',
                                                   TargetNullValue='album_art_placeholder.png'}"
                                             CachingEnabled="True"
@@ -37,16 +37,16 @@
 
                 <!-- song name, artist, album -->
                 <VerticalStackLayout Grid.Column="1">
-                    <Label Text="{Binding Name}"
+                    <Label Text="{Binding Chart.Name}"
                            TextColor="{StaticResource PrimaryLightText}"
                            LineBreakMode="WordWrap"
                            FontSize="22" 
                            FontAttributes="Bold" />
-                    <Label Text="{Binding Artist}"
+                    <Label Text="{Binding Chart.Artist}"
                            TextColor="{StaticResource PrimaryLightText}"
                            LineBreakMode="WordWrap"
                            FontSize="14" />
-                    <Label Text="{Binding Album}"
+                    <Label Text="{Binding Chart.Album}"
                            TextColor="{StaticResource SecondaryLightText}"
                            LineBreakMode="WordWrap"
                            FontSize="14" />
@@ -58,13 +58,13 @@
                      HorizontalOptions="End">
 
                 <Label HorizontalOptions="End"
-                       Text="{Binding Genre}"
+                       Text="{Binding Chart.Genre}"
                        TextColor="{StaticResource SecondaryLightText}"
                        FontSize="12">
 
                     <Label.Triggers>
                         <DataTrigger TargetType="Label" 
-                                     Binding="{Binding Genre}"
+                                     Binding="{Binding Chart.Genre}"
                                      Value="{x:Null}">
 
                             <Setter Property="IsVisible" Value="False" />
@@ -73,13 +73,13 @@
                 </Label>
 
                 <Label HorizontalOptions="End"
-                       Text="{Binding Year, StringFormat='Year: {0}'}"
+                       Text="{Binding Chart.Year, StringFormat='Year: {0}'}"
                        TextColor="{StaticResource SecondaryLightText}"
                        FontSize="12">
 
                     <Label.Triggers>
                         <DataTrigger TargetType="Label" 
-                         Binding="{Binding Year}"
+                         Binding="{Binding Chart.Year}"
                          Value="{x:Null}">
 
                             <Setter Property="IsVisible" Value="False" />
@@ -88,13 +88,13 @@
                 </Label>
 
                 <Label HorizontalOptions="End"
-                       Text="{Binding Charter, StringFormat='charted by: {0}'}"
+                       Text="{Binding Chart.Charter, StringFormat='charted by: {0}'}"
                        TextColor="{StaticResource PrimaryLightText}"
                        FontSize="12">
 
                     <Label.Triggers>
                         <DataTrigger TargetType="Label" 
-                                     Binding="{Binding Charter}"
+                                     Binding="{Binding Chart.Charter}"
                                      Value="{x:Null}">
 
                             <Setter Property="IsVisible" Value="False" />
@@ -110,7 +110,7 @@
                         Wrap="Wrap"
                         VerticalOptions="Center"
                         HorizontalOptions="Center"
-                        BindableLayout.ItemsSource="{Binding Instruments}">
+                        BindableLayout.ItemsSource="{Binding Chart.Instruments}">
 
                 <BindableLayout.ItemTemplate>
                     <DataTemplate x:DataType="chartModels:ChartInstrument">
@@ -124,10 +124,10 @@
                     IsEnabled="False"
                     FontSize="20"
                     TextColor="{StaticResource PrimaryLightText}"
-                    Command="{Binding Source={x:Reference root}, Path=DownloadCommand}">
+                    Command="{Binding DownloadChartCommand}">
                 <Button.Triggers>
                     <DataTrigger TargetType="Button"
-                                 Binding="{Binding DownloadSources[0].ExtensionData}"
+                                 Binding="{Binding Chart.DownloadSources[0].ExtensionData}"
                                  Value="{x:Null}">
                         <Setter Property="Text" Value="Download" />
                         <Setter Property="IsEnabled" Value="True" />
@@ -136,8 +136,8 @@
                 
                 <Button.CommandParameter>
                     <MultiBinding Converter="{converters:ChartDownloadSourceTupleValueConverter}">
-                        <Binding Path="." />
-                        <Binding Path="DownloadSources[0]" />
+                        <Binding Path="Chart" />
+                        <Binding Path="Chart.DownloadSources[0]" />
                     </MultiBinding>
                 </Button.CommandParameter>
             </Button>

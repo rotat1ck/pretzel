@@ -1,12 +1,12 @@
 ﻿namespace Pretzel.Core.Enums;
 
-[Flags]
 public enum DownloadStatus
 {
-    Starting = 0,
-    Downloading = 1 << 0,
-    Writing = 1 << 1,
-    Finished = 1 << 2,
-    Cancelled = 1 << 3,
-    Failed = 1 << 4
+    None = 0,
+    Starting = 1,
+    Downloading = 2,
+    Writing = 3,
+    Finished = 4,
+    Cancelled = 5,
+    Failed = 6
 }

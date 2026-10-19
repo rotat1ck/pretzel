@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Pretzel.App.Components.Explore"
              xmlns:viewModels="clr-namespace:Pretzel.App.ViewModels"
-             xmlns:chartModels="clr-namespace:Pretzel.Core.Models.Chart;assembly=Pretzel.Core"
              x:Class="Pretzel.App.Components.Explore.SearchResultsView"
              x:DataType="viewModels:ExploreViewModel">
     
@@ -49,9 +48,8 @@
             </CollectionView.EmptyViewTemplate>
 
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="chartModels:Chart">
-                    <local:ChartView DownloadCommand="{Binding Source={RelativeSource AncestorType={x:Type viewModels:ExploreViewModel}}, 
-                                               Path=DownloadChartCommand}"/>
+                <DataTemplate x:DataType="viewModels:ChartViewModel">
+                    <local:ChartView/>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

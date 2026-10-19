@@ -1,22 +1,19 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Pretzel.Core.Interfaces;
-using Pretzel.Core.Interfaces.Download;
-using Pretzel.Core.Models.Chart;
 using Pretzel.Core.Models.Search;
 using System.Collections.ObjectModel;
 
 namespace Pretzel.App.ViewModels;
 
 public partial class ExploreViewModel(IChartSearchService searchService,
-                                      IChartDownloadService downloadService,
+                                      IServiceProvider serviceProvider,
                                       SearchSessionViewModel searchSession) : BaseViewModel
 {
     private readonly IChartSearchService searchService = searchService;
-    private readonly IChartDownloadService downloadService = downloadService;
 
     [ObservableProperty]
-    private SearchSessionViewModel searchSession = searchSession;
+    public partial SearchSessionViewModel SearchSession { get; set; } = searchSession;
 
     [RelayCommand]
     public void ToggleAdvanced()
@@ -56,18 +53,6 @@ public partial class ExploreViewModel(IChartSearchService searchService,
         await SearchAsync(currentOptions);
     }
 
-    [RelayCommand(AllowConcurrentExecutions = true)]
-    public async Task DownloadChart((Chart chartInfo, ChartDownloadSource chartDownloadSource) parameter)
-    {
-        var existingDownload = downloadService.GetChartDownload(parameter.chartDownloadSource);
-        if (existingDownload is not null)
-        {
-            await downloadService.RemoveDownloadAsync(parameter.chartDownloadSource);
-        } 
-        
-        await downloadService.DownloadAsync(parameter.chartDownloadSource, parameter.chartInfo);
-    }
-
     [RelayCommand]
     public void Cancel()
     {
@@ -93,7 +78,9 @@ public partial class ExploreViewModel(IChartSearchService searchService,
                 Returned += sourceResult.Items.Count();
                 foreach (var chart in sourceResult.Items)
                 {
-                    DisplayCharts.Add(chart);
+                    var chartVm = serviceProvider.GetRequiredService<ChartViewModel>();
+                    chartVm.Chart = chart;
+                    DisplayCharts.Add(chartVm);
                 }
             }
 
@@ -129,7 +116,7 @@ public partial class ExploreViewModel(IChartSearchService searchService,
     private List<ChartSearchResults> SourcesResults { get; set; } = new();
 
     [ObservableProperty]
-    public partial ObservableCollection<Chart> DisplayCharts { get; set; } = new();
+    public partial ObservableCollection<ChartViewModel> DisplayCharts { get; set; } = new();
 
     [ObservableProperty]
     public partial int? Count { get; set; }
