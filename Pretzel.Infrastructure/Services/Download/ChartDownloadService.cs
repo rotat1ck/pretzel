@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Pretzel.Core.Enums;
 using Pretzel.Core.Interfaces.Download;
 using Pretzel.Core.Models.Chart;
@@ -9,18 +8,26 @@ using System.Collections.Concurrent;
 namespace Pretzel.Infrastructure.Services.Download;
 
 public class ChartDownloadService(IServiceProvider serviceProvider,
-                                  IChartWriterService writerService,
-                                  IMediator mediator) : IChartDownloadService
+                                  IChartWriterService writerService) : IChartDownloadService
 {
     private readonly IServiceProvider serviceProvider = serviceProvider;
     private readonly IChartWriterService writerService = writerService;
-    private readonly IMediator mediator = mediator;
+
+    public event EventHandler<ChartDownloadAddedArgs>? OnChartDownloadAdded;
+    public event EventHandler<ChartDownloadRemovedArgs>? OnChartDownloadRemoved;
 
     public ConcurrentDictionary<ChartDownloadSource, ChartDownload> Downloads { get; private set; } = new();
 
+
     public async Task DownloadAsync(ChartDownloadSource source, Chart chartInfo)
     {
-        var chartDownload = Downloads.GetOrAdd(source, src => new ChartDownload());
+        var chartDownload = Downloads.GetOrAdd(source, src =>
+        {
+            var download = new ChartDownload();
+            OnChartDownloadAdded?.Invoke(this, new ChartDownloadAddedArgs(source, download, chartInfo));
+            return download;
+        });
+
         lock (chartDownload)
         {
             if (chartDownload.Status is DownloadStatus.Starting or DownloadStatus.Downloading or DownloadStatus.Writing)
@@ -28,47 +35,30 @@ public class ChartDownloadService(IServiceProvider serviceProvider,
                 // an exception system or notification for ui?
                 return;
             }
-        }
 
-        // send AddedMessage here later
-        await mediator.Publish(new ChartDownloadStatusChangedNotification(source));
+            chartDownload.Status = DownloadStatus.Starting;
+        }
 
         var strategy = serviceProvider.GetRequiredKeyedService<IChartDownloadStrategy>(source.Source);
 
         try
         {
             var result = await strategy.DownloadAsync(source, chartDownload.Cts.Token);
-            await UpdateDownloadAsync(source, chartDownload => chartDownload.Status = DownloadStatus.Downloading);
+            chartDownload.Status = DownloadStatus.Downloading;
 
             if (result is not null)
             {
-                await UpdateDownloadAsync(source, chartDownload => chartDownload.Result = result);
+                chartDownload.Result = result;
 
                 var status = await writerService.WriteChartAsync(result, chartInfo, chartDownload.Cts.Token);
-                await UpdateDownloadAsync(source, chartDownload => chartDownload.Status = status);
+                chartDownload.Status = status;
             }
         }
-        catch (Exception ex)
+        catch
         {
-            await UpdateDownloadAsync(source, chartDownload => chartDownload.Status = DownloadStatus.Failed);
+            chartDownload.Status = DownloadStatus.Failed;
         }
     }
-
-    private async Task UpdateDownloadAsync(ChartDownloadSource source, Action<ChartDownload> action)
-    {
-        var chartDownload = GetChartDownload(source);
-        if (chartDownload is null)
-        {
-            return;
-        }
-        
-        lock (chartDownload)
-        {
-            action(chartDownload);
-        }
-
-        await mediator.Publish(new ChartDownloadStatusChangedNotification(source));
-    } 
 
     public ChartDownload? GetChartDownload(ChartDownloadSource source)
     {
@@ -85,6 +75,7 @@ public class ChartDownloadService(IServiceProvider serviceProvider,
         if (Downloads.TryRemove(source, out var chartDownload))
         {
             //await chartDownload.Result.DisposeAsync();
+            OnChartDownloadRemoved?.Invoke(this, new ChartDownloadRemovedArgs(source));
             await chartDownload.DisposeAsync();
         }
     }

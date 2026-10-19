@@ -4,7 +4,7 @@ namespace Pretzel.Core.Models.Download;
 
 public class ChartDownload : IAsyncDisposable
 {
-    public DownloadStatus Status { get; set; } = DownloadStatus.Starting;
+    public DownloadStatus Status { get; set; }
     public CancellationTokenSource Cts { get; set; } = new();
     public DownloadResult Result { get; set; } = null!;
 
