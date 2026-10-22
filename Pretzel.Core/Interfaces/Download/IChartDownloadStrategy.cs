@@ -8,5 +8,5 @@ public interface IChartDownloadStrategy
 {
     ChartSource Source { get; }
 
-    Task<DownloadResult?> DownloadAsync(ChartDownloadSource source, CancellationToken cancellationToken);
+    Task<DownloadResult> DownloadAsync(ChartDownloadSource source, CancellationToken cancellationToken);
 }

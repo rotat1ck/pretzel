@@ -9,7 +9,7 @@ public class ChorusEncoreDownloadStrategy(IHttpClientFactory clientFactory) : IC
 {
     public ChartSource Source => ChartSource.ChorusEncore;
 
-    public async Task<DownloadResult?> DownloadAsync(ChartDownloadSource source, CancellationToken cancellationToken)
+    public async Task<DownloadResult> DownloadAsync(ChartDownloadSource source, CancellationToken cancellationToken)
     {
         var client = clientFactory.CreateClient(Source.ResolveBaseUri()
                                                       .WithSubdomain("files")

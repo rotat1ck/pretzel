@@ -43,20 +43,34 @@ public class ChartDownloadService(IServiceProvider serviceProvider,
 
         try
         {
-            var result = await strategy.DownloadAsync(source, chartDownload.Cts.Token);
             chartDownload.Status = DownloadStatus.Downloading;
+            var result = await strategy.DownloadAsync(source, chartDownload.Cts.Token);
 
             if (result is not null)
             {
                 chartDownload.Result = result;
 
+                chartDownload.Status = DownloadStatus.Writing;
                 var status = await writerService.WriteChartAsync(result, chartInfo, chartDownload.Cts.Token);
                 chartDownload.Status = status;
             }
         }
+        catch (OperationCanceledException)
+        {
+            /*
+             * download strategies aren't handling exceptions
+             * if cancellation will be thrown in them, it'll fall downwards to catch block
+             * and handled as a Failed download
+            */
+            chartDownload.Status = DownloadStatus.Cancelled;
+        }
         catch
         {
             chartDownload.Status = DownloadStatus.Failed;
+        }
+        finally
+        {
+            await chartDownload.DisposeAsync();
         }
     }
 
