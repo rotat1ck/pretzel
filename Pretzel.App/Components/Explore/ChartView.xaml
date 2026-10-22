@@ -120,17 +120,15 @@
             </FlexLayout>
 
             <Button Grid.Column="4"
-                    Text="Unsuppported"
-                    IsEnabled="False"
+                    Text="{Binding ChartDownloadStatus}"
                     FontSize="20"
                     TextColor="{StaticResource PrimaryLightText}"
                     Command="{Binding DownloadChartCommand}">
                 <Button.Triggers>
                     <DataTrigger TargetType="Button"
-                                 Binding="{Binding Chart.DownloadSources[0].ExtensionData}"
+                                 Binding="{Binding DownloadStatus}"
                                  Value="{x:Null}">
                         <Setter Property="Text" Value="Download" />
-                        <Setter Property="IsEnabled" Value="True" />
                     </DataTrigger>
                 </Button.Triggers>
                 
