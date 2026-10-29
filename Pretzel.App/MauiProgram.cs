@@ -3,11 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Maui.LifecycleEvents;
 using Microsoft.Maui.Platform;
 using Pretzel.App.ViewModels;
-using Pretzel.App.WinUI;
-using Pretzel.Core.Interfaces;
-using Pretzel.Core.Models.Search;
 using Pretzel.Infrastructure;
-using Pretzel.Infrastructure.Services.Search;
 
 namespace Pretzel.App;
 
@@ -51,7 +47,7 @@ public static class MauiProgram
 
         builder.Services.AddTransient<ExploreViewModel>();
         builder.Services.AddTransient<SearchSessionViewModel>();
-
+        builder.Services.AddTransient<ChartViewModel>();
 
         builder.Services.AddInfrastructure();
         builder.Services.RegisterSettingProviders(FileSystem.AppDataDirectory);
@@ -63,5 +59,5 @@ public static class MauiProgram
         return builder.Build();
     }
 
-    
+
 }

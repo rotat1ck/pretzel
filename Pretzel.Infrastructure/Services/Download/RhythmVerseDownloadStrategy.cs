@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Pretzel.Core.Enums;
+﻿using Pretzel.Core.Enums;
 using Pretzel.Core.Interfaces.Download;
 using Pretzel.Core.Models.Chart;
 using Pretzel.Core.Models.Chart.SourceExtensions;
@@ -15,12 +12,12 @@ public class RhythmVerseDownloadStrategy(IHttpClientFactory clientFactory) : ICh
 
     public ChartSource Source => ChartSource.RhythmVerse;
 
-    public async Task<DownloadResult?> DownloadAsync(ChartDownloadSource source, CancellationToken cancellationToken)
+    public async Task<DownloadResult> DownloadAsync(ChartDownloadSource source, CancellationToken cancellationToken)
     {
         if (source.ExtensionData is RhythmVerseChartSourceExtensionData extensionData
             && extensionData.IsExternal)
         {
-            return default;
+            throw new ArgumentException("Unproccessable external download");
         }
 
         var client = clientFactory.CreateClient(Source.ResolveBaseUri()
